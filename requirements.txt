@@ -3,7 +3,7 @@ anthropic>=0.40.0
 
 # 데이터 수집
 yfinance>=0.2.37
-FinanceDataReader>=0.9.50
+finance-datareader>=0.9.50
 
 # 데이터 처리
 pandas>=2.1.0
