@@ -405,6 +405,7 @@
     function BacktestLeaderboard({ backtest }) {
       if (!backtest) return null;
       const { agent_rankings: rankings, yesterday_comparison: yc } = backtest;
+      const hasData = rankings && rankings.length > 0 && rankings.some(r => r.total_predictions > 0);
       return (
         <div className="card-gradient rounded-xl border border-slate-700/50 mb-6">
           <div className="p-4 border-b border-slate-700/50 flex items-center gap-2">
@@ -413,7 +414,14 @@
             <span className="text-xs text-slate-400 ml-2">누적 백테스트 기준</span>
           </div>
           <div className="p-4">
-            <div className="space-y-3 mb-4">
+            {!hasData && (
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <div className="text-3xl mb-3">📊</div>
+                <p className="text-sm font-semibold text-slate-300 mb-1">데이터 누적 중</p>
+                <p className="text-xs text-slate-500">다음 거래일 분석 후부터 적중률이 집계됩니다</p>
+              </div>
+            )}
+            {hasData && <div className="space-y-3 mb-4">
               {(rankings || []).map((r, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="text-lg w-8 text-center">{i===0?"🥇":i===1?"🥈":i===2?"🥉":"4️⃣"}</div>
@@ -435,7 +443,7 @@
                   </div>
                 </div>
               ))}
-            </div>
+            </div>}
             {yc && (
               <div className="bg-slate-800/50 rounded-xl p-3 border border-slate-700/30">
                 <div className="text-xs text-slate-400 mb-2">
