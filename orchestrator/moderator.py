@@ -157,15 +157,21 @@ action_items: 투자자 실행 항목 2~3개"""
         try:
             response = self.client.messages.create(
                 model=self.model,
-                max_tokens=1024,
+                max_tokens=2048,
                 system=SYSTEM_PROMPT,
                 messages=[{"role": "user", "content": prompt}],
             )
             text = response.content[0].text
             import re
+            # 코드블록 제거
             text = re.sub(r"```(?:json)?\s*", "", text)
             text = re.sub(r"```\s*", "", text)
-            return json.loads(text.strip())
+            text = text.strip()
+            # JSON 객체 추출 (응답에 설명문이 섞여있어도 안전하게 파싱)
+            match = re.search(r"\{[\s\S]*\}", text)
+            if match:
+                text = match.group(0)
+            return json.loads(text)
         except Exception as e:
             logger.error(f"Moderator LLM 호출 실패: {e}")
             return {
