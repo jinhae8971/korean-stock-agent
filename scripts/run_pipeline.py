@@ -3,9 +3,10 @@ run_pipeline.py — 전체 파이프라인 진입점
 
 실행 순서:
   1. 환경 설정 및 로깅 초기화
-  2. 시장 데이터 수집 (collect_data.py)
+  2. 시장 데이터 수집 + 최근 24h 글로벌 뉴스 수집 (collect_data.py)
   3. 백테스트 (전일 예측 vs 실제, Moderator 선정)
-  4. 4인 에이전트 토론 (Phase 1 → Phase 2)
+  4. 5인 에이전트 토론 (Phase 1 → Phase 2)
+       퀀트 / 매크로 / 섹터매니저 / 가치투자자 / 뉴스 리스크 헌터 [NEW]
   5. Moderator 최종 판단 (Phase 3)
   6. 결과 저장 (docs/data/daily_report.json, data/history/)
   7. Telegram 알림 발송 (선택)
@@ -23,7 +24,7 @@ sys.path.insert(0, str(ROOT))
 
 import anthropic
 
-from agents import QuantAgent, MacroAgent, SectorAgent, ValueAgent
+from agents import QuantAgent, MacroAgent, SectorAgent, ValueAgent, KoreanNewsAgent
 from orchestrator import DebateEngine, Moderator, Backtester
 from scripts.collect_data import collect_market_data
 
@@ -112,16 +113,19 @@ def main():
     today_moderator = backtest_result.get("today_moderator", "중재자")
     logger.info(f"오늘의 Moderator: {today_moderator}")
 
-    # 4) 에이전트 초기화
+    # 4) 에이전트 초기화 (5인 구성 — NewsAgent 추가)
+    news_count = market_data.get("news", {}).get("total_count", 0)
+    logger.info(f"[Step 2.5] 뉴스 에이전트 준비 — 입력 뉴스 {news_count}건")
     agents = [
-        QuantAgent(client, MODEL),
-        MacroAgent(client, MODEL),
-        SectorAgent(client, MODEL),
-        ValueAgent(client, MODEL),
+        QuantAgent(client, MODEL),         # idx 0 — 기술적 지표
+        MacroAgent(client, MODEL),         # idx 1 — 거시경제
+        SectorAgent(client, MODEL),        # idx 2 — 섹터·수급
+        ValueAgent(client, MODEL),         # idx 3 — 펀더멘털·가치
+        KoreanNewsAgent(client, MODEL),    # idx 4 — 24h 뉴스 이벤트 [NEW]
     ]
 
     # 5) 토론 (Phase 1 + Phase 2)
-    logger.info("[Step 3] 에이전트 토론 진행 중...")
+    logger.info("[Step 3] 5인 에이전트 토론 진행 중...")
     engine = DebateEngine(agents)
     debate_result = engine.run(market_data)
 
