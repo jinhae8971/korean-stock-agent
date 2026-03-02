@@ -1,22 +1,27 @@
 {
   "퀀트": {
-    "total": 2,
-    "correct": 2,
+    "total": 3,
+    "correct": 3,
     "avatar": "📊"
   },
   "매크로": {
-    "total": 2,
-    "correct": 0,
+    "total": 3,
+    "correct": 1,
     "avatar": "🏦"
   },
   "섹터매니저": {
-    "total": 2,
+    "total": 3,
     "correct": 0,
     "avatar": "🔄"
   },
   "가치투자자": {
-    "total": 2,
+    "total": 3,
     "correct": 0,
     "avatar": "💎"
+  },
+  "뉴스 리스크 헌터": {
+    "total": 1,
+    "correct": 1,
+    "avatar": "📡"
   }
 }
