@@ -213,6 +213,21 @@ def collect_market_data() -> Dict:
     result["foreigners_net"] = _estimate_foreign_net(result.get("kospi", {}))
     result["institutions_net"] = _estimate_institution_net(result.get("kospi", {}))
 
+    # 5) 최근 24시간 글로벌 뉴스 수집 [NEW]
+    logger.info("뉴스 데이터 수집 중...")
+    try:
+        from scripts.collect_news import collect_news
+        result["news"] = collect_news(hours=24)
+        logger.info(f"뉴스 수집 완료: {result['news'].get('total_count', 0)}건")
+    except Exception as e:
+        logger.warning(f"뉴스 수집 실패 (파이프라인 계속 진행): {e}")
+        result["news"] = {
+            "international": [], "economic": [], "technology": [], "korean": [],
+            "collected_at": datetime.now().isoformat(),
+            "total_count": 0,
+            "collection_errors": [str(e)],
+        }
+
     result["collected_at"] = datetime.now().isoformat()
     logger.info("데이터 수집 완료")
     return result
