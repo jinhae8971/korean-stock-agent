@@ -55,80 +55,86 @@
 
     // ─── 샘플 데이터 (API 없을 때 fallback) ─────────────────────────────────
     const SAMPLE = {
-      date: "2026-03-01",
-      generated_at: "2026-03-01T08:30:00",
+      date: "2026-03-06",
+      generated_at: "2026-03-06T08:30:00",
       market_data: {
-        kospi:  { close: 2567.3, change: 18.2, change_pct: 0.71, volume: 520000000, volume_change_pct: 12.4 },
-        kosdaq: { close: 851.4,  change: -3.1, change_pct: -0.36, volume: 310000000 },
-        nasdaq: { close: 18420.5, change_pct: 0.92 },
-        sp500:  { close: 5814.0,  change_pct: 0.54 },
-        usdkrw: 1318.5,
-        us10y:  4.32,
-        foreigners_net:   1240,
-        institutions_net: -380,
-        technical_indicators: { rsi: 58.4, macd: 12.3, signal: 9.1, histogram: 3.2, bb_position: 0.68, ma5: 2548.0, ma20: 2510.0, ma60: 2480.0 },
+        kospi:  { close: 5583.9, change: 490.36, change_pct: 9.63, volume: 520000000, volume_change_pct: 12.4 },
+        kosdaq: { close: 1116.41, change: 137.97, change_pct: 14.10, volume: 310000000 },
+        nasdaq: { close: 22749.0, change_pct: -0.26 },
+        sp500:  { close: 6830.7,  change_pct: -0.56 },
+        usdkrw: 1480.4,
+        us10y:  4.15,
+        foreigners_net:   2704,
+        institutions_net: -3852,
+        technical_indicators: { rsi: 78.2, macd: 45.6, signal: 38.1, histogram: 7.5, bb_position: 0.92, ma5: 5400.0, ma20: 5200.0, ma60: 5050.0 },
         top_stocks: [
-          { name: "삼성전자",      change_pct:  1.4, close: 74600 },
-          { name: "SK하이닉스",    change_pct:  2.8, close: 185000 },
-          { name: "LG에너지솔루션",change_pct: -0.6, close: 388000 },
-          { name: "NAVER",         change_pct:  0.3, close: 181500 },
-          { name: "카카오",        change_pct: -1.2, close: 42300 },
-          { name: "현대차",        change_pct:  0.8, close: 219000 },
-          { name: "POSCO홀딩스",   change_pct:  1.9, close: 381500 },
-          { name: "엔비디아",      change_pct:  3.1, close: 131.4 },
+          { name: "삼성전자",      change_pct: 11.27, close: 191600 },
+          { name: "SK하이닉스",    change_pct: 10.84, close: 941000 },
+          { name: "LG에너지솔루션",change_pct:  6.91, close: 371500 },
+          { name: "NAVER",         change_pct:  5.77, close: 220000 },
+          { name: "카카오",        change_pct:  8.82, close:  51200 },
+          { name: "현대차",        change_pct:  9.38, close: 548000 },
+          { name: "POSCO홀딩스",   change_pct:  7.78, close: 346500 },
+          { name: "엔비디아",      change_pct:  0.16, close:  183.3 },
         ],
       },
       debate: {
-        moderator_agent: "퀀트",
+        moderator_agent: "뉴스 리스크 헌터",
         phase1_reports: [
-          { agent_name:"퀀트", role:"기술적 지표·수급 분석가", avatar:"📊", stance:"BUY",  confidence_score:78,
-            analysis:"KOSPI RSI 58.4로 과매수 구간에서 여유 있는 위치를 유지하며 모멘텀이 살아있습니다. MACD 히스토그램이 3.2로 강화 중이며, 볼린저밴드 상단 68% 위치로 추가 상승 여력이 존재합니다. 거래량이 5일 평균 대비 12.4% 증가했고 외국인 순매수 1,240억 원이 유입되어 수급 개선이 가시화되고 있습니다. 20일 이평선(2,510) 위에서 안정적으로 지지받고 있어 단기 매수 관점이 유효합니다.",
-            key_points:["RSI 58.4 — 과매수 구간 진입 전 상승 여력 충분","외국인 순매수 1,240억, 거래량 12% 증가","MACD 히스토그램 양전환 지속, 모멘텀 강화"] },
-          { agent_name:"매크로", role:"거시경제·대외변수 전문가", avatar:"🌐", stance:"HOLD", confidence_score:62,
-            analysis:"달러/원 환율이 1,318원으로 안정적이나 미국 10년물 금리가 4.32%로 고금리 기조가 지속되고 있어 성장주 밸류에이션 압박이 잠재합니다. 나스닥 0.92% 상승이 국내 IT 섹터에 긍정적 신호를 주고 있지만 Fed의 금리 인하 시기 불확실성이 2분기까지 이어질 가능성이 높습니다. 외국인 자금 유입이 지속되려면 환율 안정이 선결 조건입니다.",
-            key_points:["미국 10Y 4.32% 고금리 기조 — 성장주 밸류 압박","환율 1,318원 안정, 외국인 유입 지속 가능성","Fed 금리인하 불확실성 2Q까지 상존"] },
-          { agent_name:"섹터매니저", role:"주도 섹터·산업 분석가", avatar:"🔬", stance:"BUY",  confidence_score:81,
-            analysis:"반도체 섹터가 오늘의 주도 섹터입니다. SK하이닉스 +2.8%, 엔비디아 +3.1%로 HBM 수요 강세 기대감이 시장을 주도하고 있습니다. TSMC의 어닝 서프라이즈 이후 메모리 사이클 회복 시그널이 강화되고 있으며, 삼성전자 +1.4%도 갤럭시 AI 수요 기대감으로 동반 상승 중입니다. 이차전지는 유럽 EV 수요 부진으로 LG에너지솔루션 -0.6% 약세, 관망 필요합니다.",
-            key_points:["반도체 사이클 회복 — SK하이닉스·엔비디아 동반 급등","이차전지 유럽 수요 부진 — 단기 관망 권고","POSCO홀딩스 +1.9%, 철강·소재 순환 매수 주목"] },
-          { agent_name:"가치투자자", role:"밸류에이션·역발상 전략가", avatar:"💰", stance:"HOLD", confidence_score:55,
-            analysis:"KOSPI 현재 PBR 약 0.95배로 역사적 저평가 구간에 진입해 있어 장기 투자자에게는 매력적인 레벨입니다. 그러나 단기 모멘텀에 따른 반도체 급등이 실적 대비 과평가 리스크를 내포하고 있어 신중한 접근이 필요합니다. 배당수익률이 높은 금융·유틸리티 섹터의 가치주 매력도가 높아지고 있으며, 역발상 관점에서는 낙폭 과대한 이차전지 섹터의 저점 매수 기회를 장기적으로 탐색할 시점입니다.",
-            key_points:["KOSPI PBR 0.95배 — 역사적 저평가 구간","반도체 모멘텀 과열 리스크 경고 — 실적 확인 필요","금융·배당주 저점 매수 기회 주목"] },
+          { agent_name:"퀀트", role:"기술적 지표·수급 분석가", avatar:"📊", stance:"SELL", confidence_score:42,
+            analysis:"KOSPI 5583.9 (+9.63%)는 단일 세션 기준 역대급 상승률로 RSI 80+ 과매수 구간 진입 확실. 외국인 2704억 순매수 vs 기관 -3852억 순매도는 수급 불일치 패턴. 볼린저밴드 상단 2σ 돌파 시 평균회귀 법칙상 3거래일 내 조정 확률 68%.",
+            key_points:["RSI 80+ 과매수 구간, 평균회귀 압력 72시간 내 발현 예상","외국인 +2704억 vs 기관 -3852억, 순매도 갭은 단기 모멘텀 약화 지표","나스닥 -0.26% 하락 속 한국 급등은 지속 기간 5~7 거래일 제한적"] },
+          { agent_name:"매크로", role:"거시경제·대외변수 전문가", avatar:"🌐", stance:"HOLD", confidence_score:68,
+            analysis:"한미 증시 간 디커플링 관찰. 달러/원 환율 1480원대는 고평가 구간이나 외국인 2704억 순매수는 밸류에이션 매력 반영. 미국 10년물 4.15%는 연준 긴축 완화 신호로 성장주 밸류에이션 부담을 일부 완화.",
+            key_points:["한미 증시 디커플링: 나스닥 -0.26% vs KOSPI +9.63%","미국 10년물 금리 4.15% 안정화로 성장주 부담 완화","환율 1480원대 고착과 수급 괴리 주의"] },
+          { agent_name:"섹터매니저", role:"주도 섹터·산업 분석가", avatar:"🔬", stance:"BUY", confidence_score:78,
+            analysis:"반도체와 자동차 섹터가 주도. 삼성전자(+11.3%)와 SK하이닉스(+10.8%)의 동반 상승은 HBM 수요 회복 기대 반영. 현대차(+9.4%)는 미국 IRA 세제 혜택 연장 기대. 섹터 로테이션은 방어→성장 전환 신호가 명확.",
+            key_points:["반도체 섹터 주도: 삼성전자·SK하이닉스 동반 10% 이상 상승","이차전지 섹터 회피: LG에너지솔루션 상승률 6.9%로 약세","성장주 중심 로테이션 가속 예상"] },
+          { agent_name:"가치투자자", role:"밸류에이션·역발상 전략가", avatar:"💰", stance:"SELL", confidence_score:72,
+            analysis:"KOSPI +9.63% 급등은 전형적 과열 국면. 기관 -3852억 대규모 순매도는 밸류에이션 부담 반영. 나스닥 하락 속 한국만 급등한 디커플링은 지속가능성이 낮으며 단기 센티멘트 과열 가능성 높음.",
+            key_points:["KOSPI +9.63% 급등은 단기 과열 신호","역발상 관점: 군중이 탐욕일 때는 경계 국면","현재는 신규 매수 자제, KOSPI 5000~5200 구간 재진입 대기"] },
+          { agent_name:"뉴스 리스크 헌터", role:"이벤트 드리븐 리스크 & 촉매 분석가", avatar:"📡", stance:"SELL", confidence_score:82,
+            analysis:"이란 전쟁 확산이 한국 증시의 최대 리스크. 중동 긴장이 중국 에너지 안보까지 위협하며, 한국 수출의 25%를 차지하는 중국 경기 둔화로 직결. 트럼프 행정부의 유가 급등 대응이 Fed 긴축 재개 가능성을 높여 외국인 자금 이탈 압력 강화.",
+            key_points:["이란 전쟁 확산 → 중국 에너지 안보 위협 → 對중 수출 타격","중국 1991년 이래 최저 성장 목표 → 수출 기업 실적 하향 압력","트럼프 행정부 유가 대응 → Fed 긴축 재개 시나리오"] },
         ],
         phase2_critiques: [
-          { from_agent:"퀀트",     to_agent:"가치투자자", critique:"PBR 0.95배 저평가 논거는 정태적 분석입니다. 현재 거래량 동반 상승과 MACD 모멘텀을 고려하면 '기다리는 가치투자'는 수익 기회를 놓칠 수 있습니다. 기술적으로 2,510 지지선 안착이 확인됐고 RSI 58은 추가 상승 여력을 의미합니다. 밸류에이션만으로 진입 타이밍을 결정하는 것은 데이터 기반 전략과 배치됩니다." },
-          { from_agent:"매크로",   to_agent:"섹터매니저", critique:"반도체 섹터 낙관론은 미국 Fed 금리인하 기대치에 상당 부분 의존하고 있습니다. 4.32% 금리 환경에서 성장주 PER이 추가로 확대될 여력이 제한됩니다. HBM 수요 강세도 TSMC 어닝 이후 이미 주가에 선반영된 측면이 강하며, 2분기 중국 경기 둔화 시 반도체 수출에 직격탄이 될 수 있습니다." },
-          { from_agent:"섹터매니저", to_agent:"매크로",   critique:"금리 압박 논거는 이미 시장이 충분히 반영한 구성 요인입니다. 엔비디아 +3.1%, 나스닥 +0.92%는 'Higher for Longer' 환경에서도 AI 수요 기반 반도체 기업의 실적 모멘텀이 금리 부담을 압도하고 있음을 보여줍니다. 거시적 불확실성을 이유로 섹터 특화 강세를 부정하는 것은 bottom-up 증거를 무시하는 것입니다." },
-          { from_agent:"가치투자자", to_agent:"퀀트",   critique:"RSI·MACD의 단기 모멘텀이 강하더라도 내재 가치 대비 과평가 상태에서는 기술적 지표가 후행할 수 있습니다. 반도체 종목들의 PER이 역사적 고점 수준에 근접하고 있으며, 군중이 '모멘텀 매수'에 집중할 때가 역설적으로 경계해야 할 시점입니다. 거래량 증가가 신규 매수인지 단기 차익 실현인지 구분이 필요합니다." },
+          { from_agent:"퀀트",       to_agent:"가치투자자", critique:"PBR 저평가 논거는 정태적 분석입니다. 현재 RSI 80+ 과매수와 기관 -3852억 대량 매도는 기술적으로도 SELL을 지지합니다. 다만 가치투자자의 5000~5200 재진입 구간은 MA60 지지선과 일치하는 합리적 타겟입니다." },
+          { from_agent:"매크로",     to_agent:"뉴스 리스크 헌터", critique:"이란 전쟁 리스크는 과대평가 가능성 있습니다. 현재 브렌트유 $64/배럴로 안정되어 있으며 중동 갈등이 에너지 쇼크로 직결되지 않고 있습니다. 연준 금리 동결 장기화와 달러 강세가 더 치명적인 변수입니다." },
+          { from_agent:"섹터매니저", to_agent:"퀀트",       critique:"퀀트는 RSI 과매수만 보고 섹터 펀더멘털을 놓쳤습니다. 삼성전자·SK하이닉스 동반 10%+ 급등은 HBM 수요 확대와 AI 서버 증설 수혜 기대가 반영된 것으로, 산업 사이클 전환점 진입 가능성을 간과한 오판입니다." },
+          { from_agent:"가치투자자", to_agent:"매크로",     critique:"매크로 에이전트는 외국인 순매수 2704억이라는 단기 모멘텀에 과도하게 주목합니다. 급등 직후의 시장은 밸류에이션 과열 신호이며, 기관 -3852억 순매도는 스마트머니가 고점 인식 하에 차익실현에 나섰음을 시사합니다." },
+          { from_agent:"뉴스 리스크 헌터", to_agent:"섹터매니저", critique:"섹터매니저가 전제한 반도체 사이클 회복은 중동 전쟁 확대 리스크로 재검토 필요합니다. 이란-쿠르드 분쟁 심화와 미국의 이란 드론 대응 요청은 중동 공급망 불안을 가중시킵니다." },
         ],
       },
       verdict: {
-        today_moderator_agent: "퀀트",
-        final_stance: "BUY",
-        confidence_score: 72,
-        summary: "4인 에이전트 토론 결과, 기술적 지표(퀀트)와 섹터 모멘텀(섹터매니저)이 강력한 매수 신호를 제시하며 다수를 형성했습니다. 매크로 리스크(고금리)와 밸류에이션 경고(가치투자자)가 존재하나 현재 수급 개선과 반도체 사이클 회복이 이를 상회합니다. 단기 매수 포지션을 유지하되 RSI 70 접근 시 분할 익절 전략을 권장합니다.",
-        investment_weather: "partly_sunny",
-        investment_weather_icon: "🌤️",
-        investment_weather_kr: "매수 우위 — 구름 조금",
-        top_sectors: ["반도체 (HBM·메모리)", "철강·소재", "AI 인프라"],
-        risk_factors: ["미국 고금리 장기화", "중국 경기 둔화", "이차전지 유럽 수요 부진"],
-        action_items: ["삼성전자·SK하이닉스 비중 유지", "RSI 70 접근 시 분할 익절 준비", "이차전지 추가 하락 시 저점 탐색"],
-        stance_votes: { "퀀트":"BUY", "매크로":"HOLD", "섹터매니저":"BUY", "가치투자자":"HOLD" },
+        today_moderator_agent: "뉴스 리스크 헌터",
+        final_stance: "HOLD",
+        confidence_score: 71,
+        summary: "5인 에이전트 토론 결과, KOSPI +9.63% 역대급 상승은 반도체 펀더멘털에 기반하나 통계적 과열 신호가 명확합니다. 퀀트의 RSI 과매수, 기관 대량 매도 수급 괴리, 뉴스 리스크 헌터의 이란 전쟁 확산 리스크를 종합하면 신규 매수보다 보유 유지 및 부분 차익실현이 합리적입니다.",
+        investment_weather: "cloudy",
+        investment_weather_icon: "⛅",
+        investment_weather_kr: "중립 — 흐림",
+        top_sectors: ["반도체(삼성전자·SK하이닉스 HBM 수혜)", "자동차(현대차 IRA 수혜)", "방산(중동 리스크 헤지용)"],
+        risk_factors: ["이란 전쟁 확산→중국 에너지 안보→對중 수출 둔화", "기관 -3852억 매도와 RSI 과매수 수급 불일치", "달러/원 1480원대 고착과 Fed 긴축 재개 가능성"],
+        action_items: ["반도체 코어 종목 보유, 5600선 돌파 시 20% 차익실현", "이차전지 추가 매수 자제", "KOSPI 5000~5200 구간 조정 시 재진입 준비"],
+        stance_votes: { "퀀트":"SELL", "매크로":"HOLD", "섹터매니저":"BUY", "가치투자자":"SELL", "뉴스 리스크 헌터":"SELL" },
       },
       backtest: {
         agent_rankings: [
-          { name:"섹터매니저", avatar:"🔬", hit_rate:0.68, total_predictions:25, correct:17 },
-          { name:"퀀트",       avatar:"📊", hit_rate:0.64, total_predictions:25, correct:16 },
-          { name:"매크로",     avatar:"🌐", hit_rate:0.60, total_predictions:25, correct:15 },
-          { name:"가치투자자", avatar:"💰", hit_rate:0.56, total_predictions:25, correct:14 },
+          { name:"뉴스 리스크 헌터", avatar:"📡", hit_rate:0.75, total_predictions:4,  correct:3 },
+          { name:"퀀트",       avatar:"📊", hit_rate:0.67, total_predictions:6,  correct:4 },
+          { name:"매크로",     avatar:"🌐", hit_rate:0.33, total_predictions:6,  correct:2 },
+          { name:"가치투자자", avatar:"💰", hit_rate:0.33, total_predictions:6,  correct:2 },
+          { name:"섹터매니저", avatar:"🔬", hit_rate:0.17, total_predictions:6,  correct:1 },
         ],
         yesterday_comparison: {
-          date: "2026-02-28",
+          date: "2026-03-05",
           actual_movement: "UP",
           predictions: [
-            { agent:"퀀트",       avatar:"📊", prediction:"BUY",  was_correct:true },
-            { agent:"매크로",     avatar:"🌐", prediction:"HOLD", was_correct:false },
-            { agent:"섹터매니저", avatar:"🔬", prediction:"BUY",  was_correct:true },
-            { agent:"가치투자자", avatar:"💰", prediction:"HOLD", was_correct:false },
+            { agent:"퀀트",       avatar:"📊", prediction:"HOLD",  was_correct:false },
+            { agent:"매크로",     avatar:"🌐", prediction:"HOLD",  was_correct:false },
+            { agent:"섹터매니저", avatar:"🔬", prediction:"HOLD",  was_correct:false },
+            { agent:"가치투자자", avatar:"💰", prediction:"BUY",   was_correct:true },
+            { agent:"뉴스 리스크 헌터", avatar:"📡", prediction:"SELL", was_correct:false },
           ],
         },
       },
@@ -258,7 +264,7 @@
 
     function AgentStanceCards({ reports, stanceVotes }) {
       return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
           {reports.map(r => (
             <div key={r.agent_name} className="card-gradient rounded-lg p-4">
               <div className="text-3xl mb-2">{r.avatar}</div>
@@ -541,7 +547,7 @@
       const [usingSample, setUsingSample] = useState(false);
 
       useEffect(() => {
-        fetch("./data/daily_report.json")
+        fetch(`./data/daily_report.json?t=${Date.now()}`)
           .then(r => r.json())
           .then(data => { setReport(data); setLoading(false); })
           .catch(() => { setReport(SAMPLE); setUsingSample(true); setLoading(false); });

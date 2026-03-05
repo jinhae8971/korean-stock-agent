@@ -159,7 +159,7 @@ def collect_market_data() -> Dict:
     for key in ["kospi", "kosdaq", "nasdaq", "sp500"]:
         df = fetch_ticker(TICKERS[key])
         result[key] = get_latest_info(df) or {"close": 0, "change_pct": 0}
-        if key == "kospi" and df is not None and len(df) >= 60:
+        if key == "kospi" and df is not None and len(df) >= 26:
             # 기술적 지표 계산 (KOSPI 기준)
             close_series = df["Close"]
             bb = calculate_bollinger(close_series)

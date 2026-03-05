@@ -143,5 +143,5 @@ class KoreanNewsAgent(BaseAgent):
         return AgentCritique(
             from_agent=self.name,
             to_agent=other_report.agent_name,
-            critique=result.strip()[:400],
+            critique=self._clean_critique(result)[:400],
         )

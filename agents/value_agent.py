@@ -96,5 +96,5 @@ KOSPI: {market_data.get('kospi',{}).get('close','N/A')} / 외국인 수급: {mar
         return AgentCritique(
             from_agent=self.name,
             to_agent=other_report.agent_name,
-            critique=result.strip(),
+            critique=self._clean_critique(result),
         )

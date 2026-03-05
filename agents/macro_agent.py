@@ -88,5 +88,5 @@ USD/KRW: {market_data.get('usdkrw','N/A')} / 미국 10Y: {market_data.get('us10y
         return AgentCritique(
             from_agent=self.name,
             to_agent=other_report.agent_name,
-            critique=result.strip(),
+            critique=self._clean_critique(result),
         )

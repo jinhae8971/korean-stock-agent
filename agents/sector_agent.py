@@ -98,5 +98,5 @@ confidence_score: 0~100 정수"""
         return AgentCritique(
             from_agent=self.name,
             to_agent=other_report.agent_name,
-            critique=result.strip(),
+            critique=self._clean_critique(result),
         )

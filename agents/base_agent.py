@@ -95,22 +95,56 @@ class BaseAgent:
                 pass
         return {}
 
+    @staticmethod
+    def _fmt(v, fmt: str = "+.2f") -> str:
+        """숫자를 안전하게 포맷팅, 숫자가 아니면 문자열 그대로 반환"""
+        if isinstance(v, (int, float)):
+            return format(v, fmt)
+        return str(v)
+
     def _market_summary(self, market_data: dict) -> str:
         """시장 데이터를 간결한 문자열로 변환 (프롬프트 주입용)"""
         lines = []
         kospi = market_data.get("kospi", {})
         kosdaq = market_data.get("kosdaq", {})
-        lines.append(f"[지수] KOSPI {kospi.get('close','N/A')} ({kospi.get('change_pct','N/A'):+.2f}%) "
-                     f"/ KOSDAQ {kosdaq.get('close','N/A')} ({kosdaq.get('change_pct','N/A'):+.2f}%)")
+        lines.append(f"[지수] KOSPI {kospi.get('close','N/A')} ({self._fmt(kospi.get('change_pct','N/A'))}%) "
+                     f"/ KOSDAQ {kosdaq.get('close','N/A')} ({self._fmt(kosdaq.get('change_pct','N/A'))}%)")
         lines.append(f"[환율] USD/KRW {market_data.get('usdkrw','N/A')}")
         lines.append(f"[금리] 미국 10Y {market_data.get('us10y','N/A')}%")
         nasdaq = market_data.get("nasdaq", {})
-        lines.append(f"[미국] 나스닥 {nasdaq.get('close','N/A')} ({nasdaq.get('change_pct','N/A'):+.2f}%)")
+        lines.append(f"[미국] 나스닥 {nasdaq.get('close','N/A')} ({self._fmt(nasdaq.get('change_pct','N/A'))}%)")
         lines.append(f"[수급] 외국인 {market_data.get('foreigners_net','N/A')}억 / "
                      f"기관 {market_data.get('institutions_net','N/A')}억")
         ti = market_data.get("technical_indicators", {})
         if ti:
-            lines.append(f"[기술] KOSPI RSI {ti.get('rsi','N/A'):.1f} / "
-                         f"MACD {ti.get('macd','N/A'):.2f} / "
-                         f"볼린저 위치 {ti.get('bb_position','N/A'):.1%}")
+            lines.append(f"[기술] KOSPI RSI {self._fmt(ti.get('rsi','N/A'), '.1f')} / "
+                         f"MACD {self._fmt(ti.get('macd','N/A'), '.2f')} / "
+                         f"볼린저 위치 {self._fmt(ti.get('bb_position','N/A'), '.1%')}")
         return "\n".join(lines)
+
+    @staticmethod
+    def _clean_critique(text: str) -> str:
+        """LLM 반론 응답에서 코드블록·JSON wrapper 제거, 순수 텍스트 추출"""
+        import re, json as _json
+        cleaned = text.strip()
+        # ```json ... ``` 코드블록 제거
+        cleaned = re.sub(r"```(?:json)?\s*", "", cleaned)
+        cleaned = re.sub(r"```\s*", "", cleaned)
+        cleaned = cleaned.strip()
+        # JSON 형태면 주요 텍스트 필드 추출
+        try:
+            obj = _json.loads(cleaned)
+            if isinstance(obj, dict):
+                for key in ["rebuttal", "critique", "core_argument", "counter_argument",
+                            "opinion", "argument", "summary"]:
+                    if key in obj and isinstance(obj[key], str):
+                        return obj[key].strip()
+                # nested dict 처리
+                for key in ["counter_argument"]:
+                    if key in obj and isinstance(obj[key], dict):
+                        ct = obj[key].get("core_thesis", "")
+                        if ct:
+                            return ct.strip()
+        except (_json.JSONDecodeError, ValueError):
+            pass
+        return cleaned
