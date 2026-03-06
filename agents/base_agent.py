@@ -135,16 +135,29 @@ class BaseAgent:
         try:
             obj = _json.loads(cleaned)
             if isinstance(obj, dict):
-                for key in ["rebuttal", "critique", "core_argument", "counter_argument",
-                            "opinion", "argument", "summary"]:
-                    if key in obj and isinstance(obj[key], str):
+                # 1차: 직접 텍스트 필드 탐색
+                text_keys = [
+                    "rebuttal", "critique", "core_argument", "counter_opinion",
+                    "opinion", "argument", "summary", "analysis",
+                    "core_thesis", "core_challenge", "counter",
+                ]
+                for key in text_keys:
+                    if key in obj and isinstance(obj[key], str) and len(obj[key]) > 20:
                         return obj[key].strip()
-                # nested dict 처리
-                for key in ["counter_argument"]:
+                # 2차: nested dict에서 텍스트 추출
+                for key in ["counter_argument", "rebuttal_detail", "analysis_detail"]:
                     if key in obj and isinstance(obj[key], dict):
-                        ct = obj[key].get("core_thesis", "")
-                        if ct:
-                            return ct.strip()
+                        for subkey in ["core_thesis", "core_challenge", "summary", "main_point"]:
+                            val = obj[key].get(subkey, "")
+                            if isinstance(val, str) and len(val) > 20:
+                                return val.strip()
+                # 3차: 가장 긴 문자열 값 반환
+                longest = ""
+                for v in obj.values():
+                    if isinstance(v, str) and len(v) > len(longest):
+                        longest = v
+                if len(longest) > 30:
+                    return longest.strip()
         except (_json.JSONDecodeError, ValueError):
             pass
         return cleaned
