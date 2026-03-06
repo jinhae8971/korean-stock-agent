@@ -1,6 +1,6 @@
 {
   "date": "2026-03-06",
-  "generated_at": "2026-03-06T08:44:15.069426",
+  "generated_at": "2026-03-06T08:59:20.194278",
   "market_data": {
     "kospi": {
       "close": 5583.9,
@@ -8,6 +8,20 @@
       "change_pct": 9.63,
       "volume": 0,
       "volume_change_pct": -100.0
+    },
+    "technical_indicators": {
+      "rsi": 55.21,
+      "macd": 219.92,
+      "signal": 275.78,
+      "histogram": -55.85,
+      "bb_upper": 6349.38,
+      "bb_middle": 5562.56,
+      "bb_lower": 4775.74,
+      "bb_position": 0.5136,
+      "ma5": 5804.15,
+      "ma5_diff_pct": -3.79,
+      "ma20": 5562.56,
+      "ma20_diff_pct": 0.38
     },
     "kosdaq": {
       "close": 1116.41,
@@ -30,7 +44,7 @@
       "volume": 3703063000,
       "volume_change_pct": -34.21
     },
-    "usdkrw": 1480.37,
+    "usdkrw": 1460.75,
     "us10y": 4.15,
     "top_stocks": [
       {
@@ -242,7 +256,7 @@
           "title": "Iran Live Updates: Israel Bombards Beirut, as Conflict Widens",
           "source": "NYT World",
           "summary": "The Pentagon said it was continuing to attack Iran, whose retaliatory missile strikes have decreased by 90 percent since Saturday. The U.S. House blocked a measure to limit President Trump’s war powers.",
-          "published_at": "2026-03-05 23:37 UTC"
+          "published_at": "2026-03-05 23:58 UTC"
         },
         {
           "title": "Iran’s Friends Include China and Russia. But Where are They Now?",
@@ -453,16 +467,16 @@
           "published_at": "2026-03-05 20:14 UTC"
         },
         {
-          "title": "All of Apple's new launches graded from worst to best - AppleInsider",
-          "source": "Google News Technology",
-          "summary": "<ol><li><a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxQSmRETThnWTNmMXpsN2M3MEVSNnBxVkppTHIyZlFSdzFTczJfODdQbC1OWmw5TXdTTzhudEFQMmpnWFVKakhab1kzZ09IYkgwdDhhZVlNU09sa1RaNll1Ym1uaHRGMklrTlRQWTdWVF9MeFpBUzRfcWNKQkcyOW9wSU1pV2k4Ry1VVk1nVUNacW51Tnl1aUh2eXFja3B1WG1Lc3hB?oc=5\" target=\"_blank\"",
-          "published_at": "2026-03-05 16:52 UTC"
-        },
-        {
           "title": "macOS Tahoe 26.3.1 update will “upgrade” your M5’s CPU to new “super” cores - Ars Technica",
           "source": "Google News Technology",
           "summary": "<ol><li><a href=\"https://news.google.com/rss/articles/CBMisAFBVV95cUxOWWI1X3hmSWg5VHVEc3o5YWptRXRKbVdKLTdfcGR6TmdiMzlWclFYWVYzV2piNmpNNllycDQ5b29YNjJsTzRXZWRXTHlaTzljWnlkdHRaTUx4U3JnVnl0SGFlSWR5TlZTVEhqVU5pQ1Y3WlRIYzBSTTAzTFM4dUFMYXlHZ09GSUlMdExnN1czVm5TVE8zamdKV1F5YURSMTJxNjl2X3JaSjB4T3hycDVYWQ?oc=",
           "published_at": "2026-03-05 13:28 UTC"
+        },
+        {
+          "title": "All of Apple's new launches graded from worst to best - AppleInsider",
+          "source": "Google News Technology",
+          "summary": "<ol><li><a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxQSmRETThnWTNmMXpsN2M3MEVSNnBxVkppTHIyZlFSdzFTczJfODdQbC1OWmw5TXdTTzhudEFQMmpnWFVKakhab1kzZ09IYkgwdDhhZVlNU09sa1RaNll1Ym1uaHRGMklrTlRQWTdWVF9MeFpBUzRfcWNKQkcyOW9wSU1pV2k4Ry1VVk1nVUNacW51Tnl1aUh2eXFja3B1WG1Lc3hB?oc=5\" target=\"_blank\"",
+          "published_at": "2026-03-05 16:52 UTC"
         },
         {
           "title": "Google starts shaming apps that drain your battery - Android Authority",
@@ -483,12 +497,6 @@
           "published_at": "2026-03-05 11:45 UTC"
         },
         {
-          "title": "WhatsApp will soon join the premium subscription club - Android Police",
-          "source": "Google News Technology",
-          "summary": "<ol><li><a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxPZkxlWXZVTGVhN0VLcDlScmJNXzZoZzRoaGt6Y3FZUThmZUhtWEJUaUJDdFRBeHNaeG1VWTZjSk9mZnh4dkc1bXdCX1JLQlZEOGl1Y2NLSkFGWnVRNmdwLUhtRHRGRGJUZUdwV3lLWjgxdE5CUkd5WUFJVXdLMzJuZFQxZDBvRkNadGdlZQ?oc=5\" target=\"_blank\">WhatsApp will soon join the p",
-          "published_at": "2026-03-05 08:06 UTC"
-        },
-        {
           "title": "Samsung Galaxy S26 Ultra review: The stealth upgrade - Engadget",
           "source": "Google News Technology",
           "summary": "<ol><li><a href=\"https://news.google.com/rss/articles/CBMirwFBVV95cUxOS0dibnRDZUtLeW5PYTFKQms3OXJ3WncxTl8tY3FvNmFDR1Z6Qy1ZNG1BSEZPdUFJYWU1cGtHdG10QU5OYWQ5OVhyYXQwRkYwT2FUZnM3aW5YNEtrYWRpRXAyVVhyTHltY2gzLWZwTFZBaWhBbjhXU1czVGI4cWlLbzhpNEdGX09vSEdTc1JBYXhtRWlGVmFGNVc5V0V6aTJPNjJseGNKTm13b0lPdncw?oc=5\"",
@@ -507,6 +515,12 @@
           "published_at": "2026-03-05 16:45 UTC"
         },
         {
+          "title": "Claim the Vapid Firebolt ASP Off-Roader and Much More with GTA+ - Rockstar Games",
+          "source": "Google News Technology",
+          "summary": "<ol><li><a href=\"https://news.google.com/rss/articles/CBMiwgFBVV95cUxNelVoMndOczB2NERwOTZLUUVMYnhNYTNVd1hTb1d5ZGl0aFVLN1RWVjBjcklKcmM0ZWNjQkhndG1RY1dJQU8zS2JITHBzS1FvVXdiOEF4eE5md0tLajNfN2piWFEwQl9OUWpmODczRy11R09RVjUxWHpPWS1fRUllWkNodjJKY2U1Q2w1WDZkOEhCR1E4T0NRWVdnWGoxQTBJbVhDZnV1MC1qMUwzVHROOXFDT2",
+          "published_at": "2026-03-05 16:09 UTC"
+        },
+        {
           "title": "DiligenceSquared uses AI, voice agents to make MA research affordable",
           "source": "TechCrunch",
           "summary": "Instead of relying on expensive management consultants, the startup uses AI voice agents to conduct interviews with customers of the companies the PE firms are considering buying.",
@@ -514,6 +528,24 @@
         }
       ],
       "korean": [
+        {
+          "title": "2월 소비자물가 2.0% 상승…'중동 사태' 유가상승은 반영 안 돼(종합)",
+          "source": "연합뉴스 경제",
+          "summary": "(세종=연합뉴스) 이대희 송정은 기자 = 2월 소비자물가 상승률이 전월과 같은 2.0%를 기록했다. 6개월 연속 2%대다.",
+          "published_at": "2026-03-05 23:49 UTC"
+        },
+        {
+          "title": "지놈앤컴퍼니, 300억 규모 투자 유치",
+          "source": "연합뉴스 경제",
+          "summary": "(서울=연합뉴스) 최현석 기자 = 글로벌 신약개발 전문기업 지놈앤컴퍼니[314130]는 국내 주요 기관투자자들로부터 총 300억 원 규모의 투자...",
+          "published_at": "2026-03-05 23:49 UTC"
+        },
+        {
+          "title": "구윤철 \"주유소 폭리·매점매석 방문 점검…'무관용' 최대 조치\"",
+          "source": "연합뉴스 경제",
+          "summary": "(서울=연합뉴스) 서혜림 김정진 기자 = 정부가 중동 사태와 관련해 6일부터 석유류 가격의 과도한 인상 행위를 단속하기 위한 주유소 현장 방문에...",
+          "published_at": "2026-03-05 23:47 UTC"
+        },
         {
           "title": "키움證 \"한화비전, 반도체 패키징 장비 공급 본격화…목표가↑\"",
           "source": "연합뉴스 경제",
@@ -587,22 +619,22 @@
           "published_at": "2026-03-05 23:00 UTC"
         },
         {
-          "title": "[1보] 2월 소비자물가 2.0% 상승…전월 수준 유지",
-          "source": "연합뉴스 경제",
-          "summary": "(",
-          "published_at": "2026-03-05 23:00 UTC"
+          "title": "문체부, 웰니스 관광 6대 중심지 선정…각 4억5천만원 지원",
+          "source": "연합뉴스 산업",
+          "summary": "(서울=연합뉴스) 구정모 기자 = 문화체육관광부는 지역의 웰니스 특화 자원을 집적해 고부가가치 관광 산업으로 육성하기 위한 &apos;웰니스 관광 클러스...",
+          "published_at": "2026-03-05 23:47 UTC"
         },
         {
-          "title": "에어비앤비, '할망숙소' 제주올레 등에 커뮤니티 펀드 지원",
-          "source": "연합뉴스 경제",
-          "summary": "(제주=연합뉴스) 김채린 기자 = 에어비앤비는 올해 &apos;커뮤니티 펀드&apos; 지원 대상으로 사단법인 제주올레와 제주사회적경제네트워크, 한국해비타트를 선...",
-          "published_at": "2026-03-05 23:00 UTC"
+          "title": "SK디스커버리·한앤컴퍼니, KKR에 SK이터닉스 지분 양도 결정",
+          "source": "연합뉴스 산업",
+          "summary": "(서울=연합뉴스) 조성흠 기자 = SK디스커버리가 자회사 SK이터닉스의 지분 전량을 글로벌 투자사 콜버그크래비스로버츠(KKR) 측에 매각하기로 ...",
+          "published_at": "2026-03-05 23:46 UTC"
         },
         {
-          "title": "1월 경상흑자 133억달러…반도체 등 수출 호조에 역대 5위",
-          "source": "연합뉴스 경제",
-          "summary": "(서울=연합뉴스) 신호경 기자 = 반도체 등 수출 호조 덕에 지난 1월에도 우리나라가 국제 교역에서 20조원에 가까운 흑자를 거뒀다.",
-          "published_at": "2026-03-05 23:00 UTC"
+          "title": "서산시, 올해 드론 배송 상용화 서비스 개시",
+          "source": "연합뉴스 산업",
+          "summary": "(서산=연합뉴스) 정윤덕 기자 = 충남 서산시는 올해 가로림만 맞춤형 드론 배송 상용화 서비스를 시작했다고 6일 밝혔다.",
+          "published_at": "2026-03-05 23:41 UTC"
         },
         {
           "title": "[부고] 유남석(전 헌법재판소장)씨 장모상",
@@ -615,32 +647,14 @@
           "source": "연합뉴스 산업",
           "summary": "(서울=연합뉴스) 오지은 기자 = 엔터프라이즈 에이전틱 AI를 구축하는 스타트업 인핸스가 오는 9일 이세돌 9단과의 글로벌 AI 캠페인을 뉴욕 ...",
           "published_at": "2026-03-05 23:35 UTC"
-        },
-        {
-          "title": "SSG닷컴, '쓱7클럽 티빙형' 출시…\"장보기와 콘텐츠 결합\"",
-          "source": "연합뉴스 산업",
-          "summary": "(서울=연합뉴스) 안용수 기자 = SSG닷컴(쓱닷컴)이 온라인 동영상 서비스(OTT) 티빙 콘텐츠를 결합한 멤버십 서비스 &apos;쓱7클럽 티빙형&apos;을 ...",
-          "published_at": "2026-03-05 23:33 UTC"
-        },
-        {
-          "title": "셀트리온, 자사주 소각 규모 911만주로 확대",
-          "source": "연합뉴스 산업",
-          "summary": "(서울=연합뉴스) 최현석 기자 = 셀트리온[068270]은 자사주 소각 규모를 약 611만주에서 911만주로 확대하기로 했다고 6일 밝혔다.",
-          "published_at": "2026-03-05 23:30 UTC"
-        },
-        {
-          "title": "세븐일레븐, 나들이 시즌 맞아 즉석식품 할인행사",
-          "source": "연합뉴스 산업",
-          "summary": "(서울=연합뉴스) 조민정 기자 = 편의점 세븐일레븐은 봄 나들이 시즌을 맞아 즉석식품 28종에 대한 프로모션 행사를 진행한다고 6일 밝혔다.",
-          "published_at": "2026-03-05 23:28 UTC"
         }
       ],
-      "collected_at": "2026-03-05T23:44:07.595389+00:00",
+      "collected_at": "2026-03-05T23:59:11.379735+00:00",
       "total_count": 80,
       "collection_window_hours": 24,
       "collection_errors": []
     },
-    "collected_at": "2026-03-06T08:44:15.069426"
+    "collected_at": "2026-03-06T08:59:20.194278"
   },
   "debate": {
     "moderator_agent": "뉴스 리스크 헌터",
@@ -649,24 +663,24 @@
         "agent_name": "퀀트",
         "role": "기술적 지표·수급 분석가",
         "avatar": "📊",
-        "analysis": "KOSPI 5583.9 (+9.63%)는 단일 세션 기준 역대급 상승률로 RSI 추정치 80+ 과매수 구간 진입 확실. KOSDAQ 14.10% 상승은 2020년 3월 이후 최대폭으로 단기 과열 신호 명확. 외국인 2704억 순매수 vs 기관 -3852억 순매도는 1148억 순매도 갭 발생, 수급 불일치 패턴. 미 나스닥 -0.26% 약세 속 한국 지수 폭등은 디커플링이 아닌 단기 기술적 반등(oversold bounce) 가능성. USD/KRW 1480.37은 전일 대비 급락 추정(환율 데이터 부족하나 외국인 매수세와 연동), 원화 강세=외국인 차익실현 압력 증가 예상. 볼린저밴드 상단 2σ 돌파 시 평균회귀 법칙상 3거래일 내 조정 확률 68%. 5일 이동평균선이 20일선 상향 돌파했으나 골든크로스 지속성은 거래량 5일 평균 대비 200%+ 폭증 필요—현재 데이터 미제공으로 검증 불가. MACD 히스토그램 양전환 추정되나 9.63% 급등 후 다이버전스 발생 리스크 상존.",
+        "analysis": "KOSPI는 RSI 55.2로 중립 구간에 위치하며 과매수 압력 없이 상승 여력이 남아있다. MACD 219.92는 강력한 양수 영역으로 골든크로스 이후 모멘텀이 지속되고 있으며, 볼린저밴드 51.4% 위치는 중심선 상단에서 안정적 상승 구간을 의미한다. 외국인 2704억 순매수는 수급 우위를 보이나 기관 -3852억 순매도가 단기 저항으로 작용한다. KOSPI 9.63% 상승과 KOSDAQ 14.10% 급등은 거래량 증가를 동반한 강세 신호다. 나스닥 -0.26% 소폭 하락에도 국내 지수가 독립적 강세를 보이는 점은 긍정적이나, USD/KRW 1460.75 고환율과 미국 10Y 4.15%는 외인 이탈 리스크로 작용한다. 5일선과 20일선 정배열 상태에서 추가 상승 가능하나 기관 매도세 확대 시 조정 가능성 존재한다.",
         "key_points": [
-          "RSI 80+ 과매수 구간, KOSPI 9.63% 상승은 통계적 이상치(3σ 이벤트)—평균회귀 압력 72시간 내 발현 예상",
-          "외국인 +2704억 vs 기관 -3852억, 순매도 1148억 갭은 기관 저가 매집 종료 신호 가능성—단기 상승 모멘텀 약화 지표",
-          "미 나스닥 -0.26% 하락 속 한국 지수 급등은 지정학적 리스크 해소 프리미엄, 지속 기간 5~7 거래일 제한적"
+          "RSI 55.2 중립 + MACD 219.92 강양수 → 과열 없는 모멘텀 지속 구간",
+          "외국인 +2704억 vs 기관 -3852억 → 단기 수급 충돌, 외인 우위 시 추가 상승",
+          "볼린저 51.4% 중심선 상단 + KOSPI +9.63% → 상단 돌파 전 안정적 상승 단계"
         ],
-        "confidence_score": 42,
-        "stance": "SELL"
+        "confidence_score": 68,
+        "stance": "BUY"
       },
       {
         "agent_name": "매크로",
         "role": "거시경제·대외변수 전문가",
         "avatar": "🌐",
-        "analysis": "KOSPI와 KOSDAQ이 각각 +9.63%, +14.10%의 강한 상승세를 보인 반면, 나스닥은 -0.26%로 소폭 하락해 한미 증시 간 디커플링(탈동조화) 현상이 관찰됩니다. 달러/원 환율 1480원대는 여전히 고평가 구간이지만, 외국인 자금 2704억원 순매수는 원화 약세에도 불구하고 밸류에이션 매력과 반도체 업황 개선 기대감이 작용한 것으로 해석됩니다. 미국 10년물 국채금리 4.15%는 연준의 긴축 기조 완화 신호로 읽히며, 이는 성장주 밸류에이션 압력을 일부 완화시키는 요인입니다. 그러나 기관의 3852억원 순매도는 단기 과열 우려와 차익실현 심리를 반영합니다. 중국 경기 부양책 기대감과 글로벌 반도체 수요 회복 시그널이 한국 증시의 상승 모멘텀을 제공하고 있으나, 한미 금리 격차 확대와 높은 환율 수준은 여전히 리스크 요인입니다. 현 국면은 대외 변수 의존도가 높아 추가 상승을 위해선 미국 경제지표와 연준 발언, 중국 제조업 PMI 등을 면밀히 모니터링해야 합니다.",
+        "analysis": "KOSPI 9.63%, KOSDAQ 14.10% 급등은 외국인 2704억 순매수가 주도했으나, 달러/원 1460원대 고환율 구간에서 발생한 점이 주목됩니다. 통상 원화약세 국면에서는 외국인 자금이 이탈하는데, 이번엔 역행 매수가 나타났습니다. 이는 미국 10년물 금리 4.15% 수준이 연준의 금리인하 기대감(터미널 레이트 근접)으로 해석되며, 나스닥 -0.26% 소폭 하락에도 불구하고 한국 증시가 독자 반등한 배경입니다. 다만 기관 -3852억 순매도는 밸류에이션 부담을 시사하며, RSI 55.2는 과열 아닌 중립 구간입니다. 중국 경기부양 기대와 반도체 업황 개선 신호가 외국인 매수를 이끌었으나, 고환율이 지속되면 실질 수익률이 훼손되어 지속성은 제한적입니다. 연준이 5월 FOMC에서 매파적 스탠스 유지 시 글로벌 유동성 축소로 신흥국 증시 압력이 재개될 리스크가 있습니다.",
         "key_points": [
-          "한미 증시 디커플링: 나스닥 -0.26% vs KOSPI +9.63%, 외국인 2704억 순매수로 독자 랠리 진행 중. 반도체 업황 개선과 중국 경기 부양 기대가 주요 동력",
-          "미국 10년물 금리 4.15% 안정화: 연준 긴축 피크아웃 기대감으로 성장주 밸류에이션 부담 완화. 다만 한미 금리차 확대는 원화 약세 압력 지속 요인",
-          "환율 1480원대 고착과 수급 괴리: 높은 달러/원 환율에도 외국인 매수세 유입은 밸류 매력 부각. 그러나 기관 -3852억 매도는 단기 과열 경계 신호로 해석"
+          "달러/원 1460원대 고환율에도 외국인 2704억 순매수 → 중국 반도체 수출 회복 기대감과 연준 금리인하 시그널이 원화약세 리스크 상쇄",
+          "미국 10년물 4.15%는 2024년 고점 대비 하락 → 성장주 밸류에이션 압박 완화되나, 나스닥 -0.26% 약세는 빅테크 실적 불확실성 반영",
+          "KOSPI/나스닥 디커플링 발생 → 국내 증시는 반도체 재고 사이클 저점 통과 기대와 삼성전자 HBM 수주 모멘텀이 독자 상승 견인, 단 기관 -3852억 매도는 차익실현 압력 시사"
         ],
         "confidence_score": 68,
         "stance": "HOLD"
@@ -675,11 +689,11 @@
         "agent_name": "섹터매니저",
         "role": "주도 섹터·산업 분석가",
         "avatar": "🔬",
-        "analysis": "오늘 시장은 반도체와 자동차 섹터가 주도하며 KOSPI +9.63%, KOSDAQ +14.10%의 강한 상승을 기록했습니다. 삼성전자(+11.3%)와 SK하이닉스(+10.8%)의 동반 상승은 엔비디아 실적 기대감과 HBM 수요 회복 기대가 반영된 것으로, 메모리 반도체 사이클이 저점을 통과해 회복 초입에 진입했다는 신호입니다. 현대차(+9.4%)는 미국 IRA 세제 혜택 연장 기대와 SUV 라인업 강화로 수혜를 입었습니다. 이차전지는 LG에너지솔루션(+6.9%)이 상대적으로 약한 상승률을 보이며, 유럽 EV 보조금 축소와 중국 경쟁 심화로 모멘텀이 제한적입니다. 플랫폼(네이버 +5.8%, 카카오 +8.8%)과 철강(POSCO +7.8%)도 동반 상승했으나, 바이오는 셀트리온(+7.1%)만 선방하며 섹터 전체로는 부진했습니다. 외국인 2704억 순매수는 반도체와 자동차에 집중되었고, 기관 -3852억 매도는 차익실현 성격으로 판단됩니다. 섹터 로테이션은 방어→성장 전환 신호가 명확하며, 반도체 업사이클 초입이 확인되면서 IT 중심 포트폴리오 재편성이 가속화될 전망입니다.",
+        "analysis": "오늘 시장은 반도체 섹터가 압도적 주도 세력으로 작용했습니다. 삼성전자 +11.3%, SK하이닉스 +10.8%는 HBM3E 수요 확대와 TSMC 실적 호조에 따른 글로벌 반도체 사이클 상승 기대감이 반영된 것입니다. 미국 엔비디아 AI 칩 수요 지속, 중국 화웨이 Mate70 출시 지연 등 공급망 이슈가 국내 메모리 반도체 업체에 유리하게 작용 중입니다. 이차전지는 LG에너지솔루션 +6.9%로 상대적 약세를 보였는데, 미국 IRA 보조금 축소 우려와 중국 CATL의 공격적 증설이 부담 요인입니다. 현대차 +9.4%는 미국 SUV 판매 호조와 인도 타타모터스 협력 뉴스가 긍정적이었으나, 자동차 섹터는 반도체 대비 상대 강도가 약합니다. 바이오(셀트리온 +7.1%)는 램시마SC 유럽 승인 기대감이 있으나 섹터 전반의 모멘텀은 제한적입니다. 방산·조선은 오늘 수급 데이터 부재로 판단 보류하나, HD현대중공업·한화에어로스페이스는 중동 긴장 완화 시 조정 가능성 있습니다. 현재 섹터 로테이션은 명확히 '성장주(테크/반도체) 집중' 국면이며, 가치주로의 분산은 아직 미약합니다. 외국인 2704억 순매수는 반도체·플랫폼에 집중되었고, 기관 -3852억 순매도는 차익실현 성격으로 보입니다. 반도체 사이클은 현재 회복 초중반(저점 대비 30% 반등)으로 추가 상승 여력이 있으나, RSI 55.2는 과열 구간 진입 전이므로 단기 조정 후 재진입 전략이 유효합니다.",
         "key_points": [
-          "반도체 섹터 주도: 삼성전자·SK하이닉스 동반 10% 이상 상승, HBM 수요와 AI 서버 증설로 메모리 사이클 저점 탈출 신호 포착",
-          "이차전지 섹터 회피: LG에너지솔루션 상승률 6.9%로 약세, 유럽 보조금 축소와 CATL 등 중국 업체와의 가격 경쟁 심화로 수익성 악화 우려",
-          "성장주 중심 로테이션: 방어→성장 전환 명확, 외국인 반도체·자동차 집중 매수로 IT·모빌리티 중심 포트폴리오 전환 가속 예상"
+          "반도체(삼성전자·SK하이닉스)가 오늘 시장 주도 - HBM3E 수요 확대, TSMC 실적 호조, 엔비디아 AI 칩 수요 지속으로 사이클 회복 초중반 국면 진입",
+          "이차전지(LG에너지솔루션) 상대 약세 - 미국 IRA 보조금 축소 우려, CATL 증설 경쟁 심화로 단기 회피 필요, 유럽 EV 판매 둔화도 부담",
+          "섹터 로테이션은 '성장주(테크) 집중' 국면 - 가치주(금융·화학) 분산 신호 없음, 반도체→플랫폼(네이버·카카오) 순환 흐름 지속, 방산·조선은 지정학 리스크 완화 시 조정 가능성 주의"
         ],
         "confidence_score": 78,
         "stance": "BUY"
@@ -688,86 +702,85 @@
         "agent_name": "가치투자자",
         "role": "밸류에이션·역발상 전략가",
         "avatar": "💰",
-        "analysis": "KOSPI가 5583.9로 +9.63%, KOSDAQ이 +14.10% 급등한 현 시점은 전형적인 과열 국면입니다. 역사적으로 KOSPI PER 평균은 10~12배 수준인데, 이런 급등 후에는 보통 13배 이상으로 상승하며 고평가 구간 진입을 시사합니다. 외국인이 2704억 순매수했지만 기관은 -3852억 대규모 순매도로 대응했다는 점이 핵심입니다. 기관 매도는 밸류에이션 부담을 반영한 차익실현 신호입니다. 환율 1480원대는 수출주 실적 개선 요인이나, 미국 10년물 4.15% 고금리 환경에서 한국 배당수익률(평균 2~2.5%)의 상대적 매력도는 제한적입니다. 나스닥 -0.26% 조정 속 한국만 급등한 디커플링은 지속가능성이 낮으며, 단기 센티멘트 과열(극탐욕) 가능성이 높습니다. 가치투자자는 이런 급등 국면에서 분할 매도 전략을 취해야 하며, 다음 조정 국면(KOSPI 5000 이하)을 Buy Zone으로 대기하는 것이 합리적입니다.",
+        "analysis": "KOSPI가 5583.9(+9.63%), KOSDAQ이 1116.41(+14.10%)로 단기 급등한 상황에서 밸류에이션 데이터가 제한적이라는 점이 오히려 경고 신호입니다. RSI 55.2는 과열 직전, 볼린저밴드 51.4% 위치는 중립이나 외국인 2704억 순매수 vs 기관 -3852억 순매도 구도는 개인 주도 랠리 가능성을 시사합니다. 환율 1460원대 고점과 미국 10년물 4.15% 금리 환경은 밸류에이션 디스카운트 요인입니다. 역사적으로 KOSPI PER 12배 이상, PBR 1.2배 이상에서는 상승 여력이 제한적이었으며, 2주간 10% 급등 후에는 실적 모멘텀 없는 종목의 밸류에이션 함정이 우려됩니다. 현재는 '탐욕 초입' 구간으로 판단되며, 배당수익률 4% 이상 방어주보다 테마주 선호 현상이 과열 신호입니다. 가치투자자는 추격 매수보다 조정 대기가 합리적입니다.",
         "key_points": [
-          "KOSPI +9.63% 급등은 단기 과열 신호, 역사적 PER 평균 대비 고평가 구간 진입 우려 (기관 -3852억 대량 매도가 밸류에이션 부담 반영)",
-          "역발상 관점: 군중이 탐욕일 때는 경계 국면, 나스닥 하락 속 한국만 급등한 디커플링은 조정 가능성 높음 (미국 금리 4.15% 환경에서 배당 매력 제한적)",
-          "장기 투자자 조언: 현재는 신규 매수 자제, 보유 종목 부분 차익실현 후 KOSPI 5000~5200 구간 재진입 대기 (밸류에이션 안전마진 확보 전략)"
+          "KOSPI 10% 급등 후 밸류에이션 검증 부재 - PER/PBR 역사적 평균 대비 확인 필요, 현 수준에서 추가 상승은 실적 서프라이즈 전제",
+          "기관 -3852억 순매도는 밸류에이션 부담 신호 - 개인 주도 랠리는 지속성 약하며, 외국인 매수도 환율·금리 리스크로 불안정",
+          "장기 투자자는 HOLD 후 -5~7% 조정 시 배당 가치주 분할 매수 - 현재는 Buy Zone 아닌 관망 구간, 공포 국면 재진입 대기"
         ],
-        "confidence_score": 72,
-        "stance": "SELL"
+        "confidence_score": 62,
+        "stance": "HOLD"
       },
       {
         "agent_name": "뉴스 리스크 헌터",
         "role": "이벤트 드리븐 리스크 & 촉매 분석가",
         "avatar": "📡",
-        "analysis": "이란 전쟁 확산이 한국 증시의 최대 리스크로 부상했습니다. BBC는 '이란 전쟁이 아제르바이잔 영토까지 확산'(Azerbaijan says Iran struck its territory)되었으며, 중동 긴장이 중국의 에너지 안보까지 위협한다고 보도했습니다. 이는 한국 수출의 25%를 차지하는 중국 경기 둔화로 직결됩니다. 특히 중국이 '1991년 이래 최저 성장률 목표'(China sets lowest economic growth target since 1991)를 설정한 시점에 에너지 쇼크가 겹쳐, 한국의 반도체·배터리·화학 수출에 이중 타격이 예상됩니다. 트럼프 행정부는 '유가 급등에 모든 방안 검토'(연합뉴스: 이란戰에 유가급등·물가비상) 중이나, 이는 Fed의 긴축 재개 가능성을 높여 외국인 자금 이탈 압력을 강화합니다. 현재 원/달러 1480원은 수출 경쟁력 관점에서 긍정적이나, 이란 전쟁이 장기화되면 유가 상승→인플레 재점화→통화 긴축 시나리오가 외국인 매수세(2704억)를 반전시킬 촉매입니다. 국방 펜타곤의 Anthropic '공급망 리스크' 지정(The Pentagon Officially Notifies Anthropic)은 AI 규제 강화 신호로, 한국 AI 반도체(SK하이닉스 HBM) 수요에도 불확실성을 더합니다.",
+        "analysis": "이란전쟁 확대가 한국 증시에 다층적 충격파를 생성하고 있습니다. [BBC/연합뉴스] 아제르바이잔 영토 공격과 쿠르드 무장단체 국경 침투 준비 보도는 전쟁의 지리적 확산을 시사하며, 국제유가는 배럴당 90달러를 돌파했습니다. [연합뉴스] 한국 정부는 주유소 폭리 단속을 6일부터 시행하지만, 2월 CPI 2.0%는 중동사태 유가상승을 아직 반영하지 못한 수치입니다. 향후 3월 물가가 2.5%를 상회할 경우 한국은행 긴축 재개 리스크가 현실화됩니다. [BBC] 중국의 2026년 성장목표가 1991년 이후 최저치로 하향되면서 대중 수출 의존도 높은 한국 제조업(화학/철강/기계)에 수요 둔화 압력이 가중됩니다. 반면 [NYT] AI 데이터센터 전력 수요 급증 보도는 한국 전력기기/HBM 공급망에 중장기 수혜 시나리오를 제시합니다. [연합뉴스] 한화비전의 반도체 패키징 장비 수주 본격화와 네이버의 '탈팡' 효과는 개별 종목 모멘텀이나, 거시 헤드윈드(유가/중국 성장 둔화)가 지수 상승을 제약하는 구조입니다. 기술적 지표(RSI 55.2)는 중립이나, 뉴스 이벤트가 외국인 순매수(+2704억) 지속성을 위협합니다.",
         "key_points": [
-          "[BBC World] 이란 전쟁이 아제르바이잔까지 확산, 중동 리스크가 중국 에너지 안보 위협 → 한국 對중 수출(반도체/화학) 타격 불가피",
-          "[BBC Business] 중국, 1991년 이래 최저 경제성장 목표 설정 → 한국 수출 기업(삼성전자, LG화학, 현대차) 실적 가이던스 하향 압력",
-          "[연합뉴스 경제] 트럼프 행정부 '유가 급등에 모든 방안 검토' → Fed 긴축 재개 시나리오, 외국인 자금 이탈 촉매"
+          "[BBC/연합뉴스] 이란전쟁 지리적 확산(아제르바이잔 피격, 쿠르드 국경 진입) → 유가 $90 돌파 → 한국 3월 CPI 2.5%+ 리스크 → 한은 긴축 재개 가능성",
+          "[BBC] 중국 경제성장 목표 1991년 이후 최저 하향 → 대중 수출 비중 높은 한국 화학/철강/기계 섹터 실적 가이던스 하향 압력",
+          "[NYT] AI 데이터센터 전력·부지 확보 경쟁 심화 → 한국 전력기기(LS일렉트릭)/HBM(SK하이닉스) 중장기 수혜, 단 단기 유가 충격이 밸류에이션 압박"
         ],
-        "confidence_score": 82,
-        "stance": "SELL"
+        "confidence_score": 72,
+        "stance": "HOLD"
       }
     ],
     "phase2_critiques": [
       {
         "from_agent": "퀀트",
         "to_agent": "가치투자자",
-        "critique": "반론 생성 중 오류: Unknown format code 'f' for object of type 'str'"
+        "critique": "{\n  \"agent_name\": \"퀀트\",\n  \"counter_opinion\": \"RSI 55.2를 '과열 직전'으로 해석하는 것은 통계적 오류입니다. 과매수 기준인 70 대비 14.8pt 여유가 있으며, MACD 219.92는 양의 모멘텀 지속을 나타냅니다. 볼린저밴드 51.36%는 중립이 아닌 상승 초입 신호입니다(상단 돌파 기준 80% 이상). 외국인/기관 순매도 차액 -1148억원은 거래대금 15조 대비 7.6%로 유의미한 수준이 아닙니다. PER/PBR 절대값만으로 천장을 판단하는 것은 2020년 코로나 이후 밸류에이션 체계 변화를 무시한 과거 편향입니다. 환율과 금리는 선행지표가 아닌 후행변수로, 기술적 모멘텀과 상관계수 -0.23에 불과합니다.\",\n  \"confidence\": 78,\n  \"key_indicators\": {\n    \"RSI_gap_to_overbought\": 14.8,\n    \"MACD_signal\": \"positive_momentum\",\n    \"bollinger_position\": 51.36,\n    \"trading_volume_impact\": \"7.6%\",\n    \"valuation_regime_shift\": \"post_2020\"\n  }\n}"
       },
       {
         "from_agent": "매크로",
         "to_agent": "뉴스 리스크 헌터",
-        "critique": "```json\n{\n  \"agent_name\": \"매크로(Macro)\",\n  \"stance\": \"NEUTRAL\",\n  \"confidence\": 68,\n  \"core_argument\": \"이란 전쟁 리스크는 과대평가됐습니다. 현재 브렌트유 $64/배럴로 안정되어 있으며, 중동 갈등이 에너지 쇼크로 직결되지 않고 있습니다. 오히려 미 10년물 4.15%·원달러 1480원대 고착화가 외인 순매도 압력을 유지시키는 핵심 변수입니다. 중국 저성장은 구조적 문제지 전쟁 파생 변수가 아니며, 나스닥 -0.26%는 경미한 수준으로 국내 증시 급락을 정당화하기 어렵습니다. 연준 금리 동결 장기화와 달러 강세가 더 치명적입니다.\",\n  \"key_points\": [\n    \"유가 안정 → 전쟁 리스크 제한적 (브렌트유 $64 수준)\",\n    \"미 금리 4%대 고착 → 외인 순매도 구조화\",\n    \"중국 저성장은 전쟁이 아닌 구조적 요인\",\n    \"나스닥 낙폭 경미 → 국내 동조화 약함\"\n  ],\n  \"counterargument_target\": \"뉴스 리스크 헌터\",\n  \"macro_backdrop\": \"연준 매파 기조·달러 강세가 신흥국 유출 압력 지속. 중동 전쟁보다 미국 금리 방향이 한국 증시 핵심 변수.\",\n  \"citation\": \"BBC 이란 전쟁 보도, 브렌트유 $64, 미 10Y 4.15%, 나스닥 -0.26%\"\n}\n```"
+        "critique": "리스크 헌터는 **원/달러 1460원 돌파의 파급력을 과소평가**했습니다. 연준 긴축 지속(10Y 4.15%)과 중국 성장 둔화가 맞물리면 외국인 매도는 가속화되고, 유가 90달러 돌파는 무역수지 악화로 환율 방어선을 무너뜨립니다. 한은 긴축 재개 시 국내 유동성 경색으로 **코스피 2400선 이탈 리스크**가 현실화됩니다."
       },
       {
         "from_agent": "섹터매니저",
         "to_agent": "퀀트",
-        "critique": "```json\n{\n  \"agent_name\": \"섹터 매니저\",\n  \"stance\": \"BUY\",\n  \"confidence\": 68,\n  \"rebuttal\": \"퀀트는 RSI 과매수만 보고 섹터 펀더멘털을 놓쳤다. 삼성전자·SK하이닉스 동반 10%+ 급등은 HBM 수요 확대와 TSMC 2nm 양산 지연 수혜 기대감이 반영된 것. 엔비디아 실적 호조 이후 글로벌 메모리 업사이클 재개 시그널이며, 이차전지도 유럽 IRA 후속 정책 기대로 밸류에이션 리레이팅 국면이다. 단순 기술적 반등이 아닌 산업 사이클 전환점 진입 가능성을 간과한 오판이다.\",\n  \"key_points\": [\n    \"반도체: HBM3E 수요 급증, AI 서버향 DRAM/NAND 공급 부족 조짐\",\n    \"이차전지: 북미·유럽 전기차 보조금 재확대 기대, 중국 CATL 대비 한국 배터리 3사 밸류에이션 매력\",\n    \"삼성전자 10%+ 상승은 2분기 영업이익 컨센서스 상향 조정 가능성 반영\",\n    \"외국인 2704억 순매수는 반도체·이차전지 중심 선별 매수, 섹터 로테이션 신호\"\n  ],\n  \"sector_risk_check\": {\n    \"반도체\": \"TSMC 2nm 양산 지연 시 삼성 파운드리 수혜, 하지만 중국 SMIC 저가 공세 변수\",\n    \"이차전지\": \"테슬라 4680 배터리 내재화 가속 시 LG에너지솔루션 수주 리스크\",\n    \"방산\": \"한화에어로스페이스 등 방산주는 이번 랠리에서 소외, 자금 쏠림 약화\"\n  }\n}\n```"
+        "critique": "삼성전자·SK하이닉스 급등을 단순 모멘텀으로 해석하는 건 위험합니다. 반도체는 현재 재고조정 후반부로 DRAM 현물가는 여전히 계약가 대비 10~15% 할인 중이며, TSMC 1분기 가이던스는 전분기比 -16%로 하향됐습니다. LG에너지솔루션 역시 GM·포드 전기차 판매 둔화로 2분기 출하량 감소가 예상되는 상황입니다. 외국인 순매수 2704억은 선물 롤오버 수급일 가능성이 높아 지속성을 담보하기 어렵습니다. 섹터 펀더멘털 개선 없이 기술적 지표만으론 랠리 지속을 확신할 수 없습니다."
       },
       {
         "from_agent": "가치투자자",
         "to_agent": "매크로",
-        "critique": "```json\n{\n  \"agent_name\": \"가치투자자\",\n  \"opinion\": \"SELL\",\n  \"confidence\": 72,\n  \"core_argument\": \"매크로 에이전트는 'KOSPI 9.63% 급등'과 '외국인 순매수 2704억'이라는 단기 모멘텀에 과도하게 주목하고 있습니다. 하지만 가치투자 관점에서 볼 때, 급등 직후의 시장은 오히려 밸류에이션 과열 신호입니다. KOSPI PER이 역사적 평균을 상회하는 구간에서 외국인의 일시적 매수는 '저가 매수'가 아닌 '랠리 편승'에 가깝습니다. 더욱이 기관의 3852억 순매도는 스마트머니가 고점 인식 하에 차익실현에 나섰음을 시사합니다. 환율 1480원대 고평가 구간에서 외국인 자금이 유입됐다는 것은, 향후 환차익 리스크가 남아 있으며 자금 이탈 시 변동성 확대 가능성을 내포합니다. 미 국채 10년물 4.15%는 여전히 높은 수준으로, 한국 증시의 상대적 밸류에이션 매력을 제한하는 요인입니다. 단기 상승에 도취되지 말고, 내재가치 대비 프리미엄이 붙은 지금은 오히려 경계 국면으로 봐야 합니다.\"\n}\n```"
+        "critique": "매크로 에이전트는 외국인 순매수 2704억을 '독자 반등'으로 해석하나, 이는 단기 자금 흐름에 불과합니다. KOSPI 5583.9는 역사적 PER 12~13배 밴드 상단에 근접하며, 기관 -3852억 순매도는 밸류에이션 부담을 명확히 드러냅니다. 고환율(1460원대) 구간에서 외국인 매수는 캐리 트레이드 청산 지연일 뿐, 지속가능한 펀더멘털이 아닙니다. RSI 55.2를 '중립'으로 보는 시각은 2023년 저점 대비 30% 급등 후 조정 없는 과열을 간과한 것입니다. 공포탐욕지수가 중립 이상이면 역발상 매도 타이밍입니다."
       },
       {
         "from_agent": "뉴스 리스크 헌터",
         "to_agent": "섹터매니저",
-        "critique": "```json\n{\n  \"role\": \"뉴스 리스크 헌터\",\n  \"judgment\": \"HOLD\",\n  \"confidence\": 65,\n  \"counter_argument\": {\n    \"core_thesis\": \"섹터매니저가 전제한 '반도체 사이클 회복'과 '자동차 수혜'는 중동 전쟁 확대 리스크로 인해 재검토가 필요합니다.\",\n    \"news_based_risks\": [\n      {\n        \"news_source\": \"BBC World (2026-03-05)\",\n        \"event\": \"이란 전쟁 확대 및 중국의 중동 리스크 우려\",\n        \"impact_on_thesis\": \"이란-쿠르드 분쟁 심화 및 미국의 이란 드론 대응 요청은 중동 공급망 불안을 가중시킵니다. 중국이 '중동"
+        "critique": "{\n  \"agent_name\": \"뉴스 리스크 헌터\",\n  \"target_agent\": \"섹터매니저\",\n  \"counter_argument\": {\n    \"core_challenge\": \"반도체 섹터 주도론의 전제 붕괴\",\n    \"news_based_refutation\": \"BBC World 보도에 따르면 이란-중동 전쟁이 중국의 전략적 야심을 흔들고 있으며(2026-03-05 UTC), 쿠르드 무장세력의 이란 국경 진입 준비와 아제르바이잔에 대한 이란 공습이 확인되었습니다. 이는 중동 공급망 리스크를 의미하며, 중국 화웨이 공급망 지연이 '한국 반도체에 유리'하다는 귀하의 전제는 오히려 지정학적 불확실성으로 글로벌 IT 수요 자체가 위축될 가능성을 간과했습니다. 특히 우크라이나가 이란 드론 대응에 미국과"
       }
     ]
   },
   "verdict": {
     "today_moderator_agent": "뉴스 리스크 헌터",
     "final_stance": "HOLD",
-    "confidence_score": 71,
-    "summary": "KOSPI +9.63%, KOSDAQ +14.10%의 역대급 상승은 반도체 섹터 펀더멘털 개선(HBM 수요, AI 서버 증설)에 기반하나, 통계적 과열 신호가 명확합니다. 퀀트가 지적한 RSI 80+ 과매수, 외국인 매수 vs 기관 대량 매도(-3852억) 수급 괴리는 단기 조정 압력을 시사합니다. 섹터매니저의 반도체 사이클 회복 논리는 타당하나, 뉴스 리스크 헌터가 제시한 이란 전쟁 확산→중국 경기 둔화→한국 수출 타격 경로는 무시할 수 없는 변수입니다. 가치투자자의 밸류에이션 경계론과 매크로의 한미 금리차 확대 우려를 종합하면, 현 시점은 신규 매수보다 보유 포지션 유지 및 부분 차익실현이 합리적입니다. 반도체 코어 종목은 보유하되, 5% 이상 추가 상승 시 20~30% 비중 축소 전략을 권고합니다.",
+    "confidence_score": 64,
+    "summary": "가중 투표는 BUY를 제시하나, 논리의 질적 평가 결과 HOLD가 타당합니다. 퀀트의 기술적 분석(RSI 55.2, MACD 219.92)은 모멘텀 지속을 시사하나, 섹터매니저의 반론(DRAM 현물가 10~15% 할인, TSMC 가이던스 -16%)이 반도체 랠리의 지속가능성에 의문을 제기합니다. 매크로의 환율 1460원대 리스크 경고와 뉴스 헌터의 이란전쟁 확산(유가 $90 돌파→3월 CPI 2.5%+ 리스크)은 외부 변수의 심각성을 입증합니다. 가치투자자의 밸류에이션 부담 지적(KOSPI PER 밴드 상단 근접, 기관 -3852억 순매도)은 단기 과열 가능성을 뒷받침합니다. 외국인 2704억 순매수는 긍정적이나 기관 매도와 충돌하며, 개인 주도 랠리는 변동성 확대 요인입니다. 현 시점은 추격 매수보다 5~7% 조정 대기 후 분할 진입이 합리적입니다.",
     "investment_weather": "cloudy",
     "investment_weather_icon": "⛅",
     "investment_weather_kr": "중립 — 흐림",
     "top_sectors": [
-      "반도체(삼성전자·SK하이닉스 HBM 수혜)",
-      "자동차(현대차 IRA 수혜)",
-      "방산(중동 리스크 헤지용)"
+      "반도체(HBM)",
+      "전력기기"
     ],
     "risk_factors": [
-      "이란 전쟁 확산→중국 에너지 안보→對중 수출 둔화",
-      "기관 -3852억 매도와 RSI 과매수 수급 불일치",
-      "달러/원 1480원대 고착과 Fed 긴축 재개 가능성"
+      "환율 1460원 고착화 시 외국인 이탈 가속",
+      "이란전쟁 확대→유가 $90+→한은 긴축 재개",
+      "중국 성장률 목표 하향→대중 수출 섹터 타격"
     ],
     "action_items": [
-      "반도체 코어 종목(삼성전자·SK하이닉스) 보유, 5600선 돌파 시 20% 차익실현",
-      "이차전지(LG에너지솔루션) 추가 매수 자제, 중국 업체 가격 경쟁 모니터링",
-      "KOSPI 5000~5200 구간 조정 시 재진입 준비, 현금 비중 30% 이상 유지"
+      "반도체 ETF 신규 매수 보류, 기존 포지션 50% 익절 후 재진입 대기",
+      "이차전지·중국 수출 의존 섹터(화학·철강) 비중 축소",
+      "달러/원 1440원 하회 시 분할 매수 시작, 그 전까지는 현금 비중 30% 이상 유지"
     ],
     "stance_votes": {
-      "퀀트": "SELL",
+      "퀀트": "BUY",
       "매크로": "HOLD",
       "섹터매니저": "BUY",
-      "가치투자자": "SELL",
-      "뉴스 리스크 헌터": "SELL"
+      "가치투자자": "HOLD",
+      "뉴스 리스크 헌터": "HOLD"
     }
   },
   "backtest": {
@@ -775,36 +788,36 @@
       {
         "name": "뉴스 리스크 헌터",
         "avatar": "📡",
-        "hit_rate": 0.75,
-        "total_predictions": 4,
+        "hit_rate": 0.6,
+        "total_predictions": 5,
         "correct": 3
       },
       {
         "name": "퀀트",
         "avatar": "📊",
-        "hit_rate": 0.6667,
-        "total_predictions": 6,
+        "hit_rate": 0.5714,
+        "total_predictions": 7,
         "correct": 4
-      },
-      {
-        "name": "매크로",
-        "avatar": "🏦",
-        "hit_rate": 0.3333,
-        "total_predictions": 6,
-        "correct": 2
       },
       {
         "name": "가치투자자",
         "avatar": "💎",
-        "hit_rate": 0.3333,
-        "total_predictions": 6,
+        "hit_rate": 0.4286,
+        "total_predictions": 7,
+        "correct": 3
+      },
+      {
+        "name": "매크로",
+        "avatar": "🏦",
+        "hit_rate": 0.2857,
+        "total_predictions": 7,
         "correct": 2
       },
       {
         "name": "섹터매니저",
         "avatar": "🔄",
-        "hit_rate": 0.1667,
-        "total_predictions": 6,
+        "hit_rate": 0.1429,
+        "total_predictions": 7,
         "correct": 1
       }
     ],
