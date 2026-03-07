@@ -23,69 +23,68 @@ HEADERS = {
 
 # ─── 데이터 수집 ──────────────────────────────────────────────────────────
 
-def fetch_naver_investor_trend() -> dict:
-    """
-    네이버 금융 투자자별 매매동향 (KOSPI)
-    https://finance.naver.com/sise/investorDealTrendDay.naver
-    """
-    url = "https://finance.naver.com/sise/investorDealTrendDay.naver"
-    params = {"sosok": "01"}  # 01=코스피, 02=코스닥
+def _parse_naver_value(s: str) -> int:
+    """네이버 API 값 파싱: '+29,488' / '-19,418' / '0' → int"""
+    if not s:
+        return 0
+    s = str(s).replace(",", "").replace("+", "").strip()
     try:
-        resp = requests.get(url, params=params, headers=HEADERS, timeout=15)
-        resp.encoding = "euc-kr"
-        html = resp.text
+        return int(s)
+    except ValueError:
+        return 0
 
-        # 테이블에서 날짜별 데이터 추출
-        # 패턴: 날짜, 개인, 외국인, 기관, 기타
-        rows = []
-        # 네이버 테이블 파싱
-        table_match = re.findall(
-            r'<td\s+class="date2">([\d.]+)</td>.*?'
-            r'<td[^>]*>([\d,\-]+)</td>.*?'   # 개인
-            r'<td[^>]*>([\d,\-]+)</td>.*?'   # 외국인
-            r'<td[^>]*>([\d,\-]+)</td>',      # 기관
-            html, re.DOTALL
-        )
 
-        if not table_match:
-            # 대체 파싱: tr 기반
-            tr_blocks = re.findall(r'<tr[^>]*>(.*?)</tr>', html, re.DOTALL)
-            for tr in tr_blocks:
-                tds = re.findall(r'<td[^>]*>(.*?)</td>', tr, re.DOTALL)
-                if len(tds) >= 4:
-                    date_match = re.search(r'(\d{4}\.\d{2}\.\d{2})', tds[0])
-                    if date_match:
-                        date_str = date_match.group(1)
-                        vals = []
-                        for td in tds[1:4]:
-                            clean = re.sub(r'[<>a-zA-Z/"\s=]', '', td)
-                            clean = clean.replace(',', '').replace('--', '0').strip()
-                            try:
-                                vals.append(int(clean))
-                            except ValueError:
-                                vals.append(0)
-                        if len(vals) >= 3:
-                            rows.append({
-                                "date": date_str,
-                                "individual": vals[0],  # 개인 (백만원)
-                                "foreign": vals[1],     # 외국인
-                                "institution": vals[2], # 기관
-                            })
-        else:
-            for m in table_match:
-                date_str, indiv, foreign, inst = m
-                rows.append({
-                    "date": date_str.strip(),
-                    "individual": _parse_num(indiv),
-                    "foreign": _parse_num(foreign),
-                    "institution": _parse_num(inst),
-                })
+def _get_business_days(end_date: dt.date, count: int = 10) -> list:
+    """최근 N 영업일 날짜 리스트 반환 (최신→과거 순)"""
+    days = []
+    d = end_date
+    while len(days) < count:
+        if d.weekday() < 5:  # 월~금
+            days.append(d)
+        d -= dt.timedelta(days=1)
+    return days
 
-        return {"source": "naver", "rows": rows[:10]}
 
-    except Exception as e:
-        print(f"  [WARN] Naver investor trend failed: {e}")
-        return {"source": "naver", "rows": [], "error": str(e)}
+def fetch_naver_mobile_trend(end_date: dt.date) -> dict:
+    """
+    네이버 모바일 증권 API로 투자자별 매매동향 수집 (KOSPI)
+    https://m.stock.naver.com/api/index/KOSPI/trend?bizdate=YYYYMMDD
+    최근 10영업일 데이터를 개별 요청으로 수집
+    """
+    url = "https://m.stock.naver.com/api/index/KOSPI/trend"
+    biz_days = _get_business_days(end_date, 10)
+    rows = []
+
+    for d in biz_days:
+        bizdate = d.strftime("%Y%m%d")
+        try:
+            resp = requests.get(
+                url, params={"bizdate": bizdate},
+                headers=HEADERS, timeout=10,
+            )
+            if resp.status_code != 200:
+                continue
+            data = resp.json()
+            actual_date = data.get("bizdate", bizdate)
+            foreign = _parse_naver_value(data.get("foreignValue", "0"))
+            institution = _parse_naver_value(data.get("institutionalValue", "0"))
+            individual = _parse_naver_value(data.get("personalValue", "0"))
+
+            # 주말/공휴일은 0값 → 건너뛰기
+            if foreign == 0 and institution == 0 and individual == 0:
+                continue
+
+            rows.append({
+                "date": f"{actual_date[:4]}.{actual_date[4:6]}.{actual_date[6:8]}",
+                "foreign": foreign,
+                "institution": institution,
+                "individual": individual,
+            })
+        except Exception as e:
+            print(f"  [WARN] Naver mobile trend {bizdate} failed: {e}")
+            continue
+
+    return {"source": "naver_mobile", "rows": rows}
 
 
 def fetch_naver_foreign_detail() -> dict:
@@ -94,7 +93,7 @@ def fetch_naver_foreign_detail() -> dict:
     """
     result = {"buy_top": [], "sell_top": []}
     for buy_sell in ["buy", "sell"]:
-        url = f"https://finance.naver.com/sise/sise_deal_rank.naver"
+        url = "https://finance.naver.com/sise/sise_deal_rank.naver"
         params = {
             "sosok": "01",  # 코스피
             "investor_gubun": "9000",  # 외국인
@@ -105,11 +104,12 @@ def fetch_naver_foreign_detail() -> dict:
             resp.encoding = "euc-kr"
             html = resp.text
 
-            # 종목명 + 매매금액 추출
             stocks = []
-            rows = re.findall(r'<a\s+href="/item/main\.naver\?code=\d+"[^>]*>(.*?)</a>.*?'
-                              r'<td[^>]*>([\d,]+)</td>', html, re.DOTALL)
-            for name, amount in rows[:10]:
+            matches = re.findall(
+                r'<a\s+href="/item/main\.naver\?code=\d+"[^>]*>(.*?)</a>.*?'
+                r'<td[^>]*>([\d,]+)</td>', html, re.DOTALL,
+            )
+            for name, amount in matches[:10]:
                 name = re.sub(r'<[^>]+>', '', name).strip()
                 amount = int(amount.replace(',', ''))
                 if name:
@@ -122,91 +122,6 @@ def fetch_naver_foreign_detail() -> dict:
     return result
 
 
-def fetch_pykrx_investor(today_str: str) -> dict:
-    """
-    pykrx로 투자자별 순매수 가져오기 (fallback)
-    """
-    try:
-        from pykrx import stock
-        # 최근 10영업일
-        end = today_str.replace("-", "")
-        # 10영업일 전 계산 (약 2주 전)
-        start_dt = dt.datetime.strptime(end, "%Y%m%d") - dt.timedelta(days=20)
-        start = start_dt.strftime("%Y%m%d")
-
-        df = stock.get_market_trading_value_by_date(start, end, "KOSPI")
-        if df is None or df.empty:
-            return {"source": "pykrx", "rows": [], "error": "empty dataframe"}
-
-        rows = []
-        for idx, row in df.tail(10).iterrows():
-            date_str = idx.strftime("%Y.%m.%d")
-            rows.append({
-                "date": date_str,
-                "individual": int(row.get("개인", 0) / 1_000_000),  # 백만원→억원 변환 불필요 (이미 원 단위)
-                "foreign": int(row.get("외국인합계", row.get("외국인", 0)) / 100_000_000),  # 원→억원
-                "institution": int(row.get("기관합계", row.get("기관", 0)) / 100_000_000),
-            })
-
-        return {"source": "pykrx", "rows": rows}
-    except Exception as e:
-        print(f"  [WARN] pykrx fallback failed: {e}")
-        return {"source": "pykrx", "rows": [], "error": str(e)}
-
-
-def fetch_krx_api_investor(today_str: str) -> dict:
-    """
-    KRX Open API로 투자자별 순매수 (fallback 2)
-    """
-    try:
-        url = "http://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd"
-        end = today_str.replace("-", "")
-        start_dt = dt.datetime.strptime(end, "%Y%m%d") - dt.timedelta(days=20)
-        start = start_dt.strftime("%Y%m%d")
-
-        payload = {
-            "bld": "dbms/MDC/STAT/standard/MDCSTAT02203",
-            "strtDd": start,
-            "endDd": end,
-            "mktId": "STK",  # 코스피
-            "etf": "EF",
-            "csvxls_isNo": "false",
-        }
-        resp = requests.post(url, data=payload, headers={
-            **HEADERS,
-            "Referer": "http://data.krx.co.kr/contents/MDC/MDI/mdiLoader/index.cmd",
-        }, timeout=15)
-        data = resp.json()
-
-        rows = []
-        for item in data.get("output", [])[:10]:
-            rows.append({
-                "date": item.get("TRD_DD", ""),
-                "individual": _parse_num(item.get("INVST_TP_NM_1", "0")),
-                "foreign": _parse_num(item.get("INVST_TP_NM_2", "0")),
-                "institution": _parse_num(item.get("INVST_TP_NM_3", "0")),
-            })
-        return {"source": "krx_api", "rows": rows}
-    except Exception as e:
-        print(f"  [WARN] KRX API fallback failed: {e}")
-        return {"source": "krx_api", "rows": [], "error": str(e)}
-
-
-def _parse_num(s: str) -> int:
-    """문자열에서 숫자 추출"""
-    if not s:
-        return 0
-    s = str(s).replace(',', '').replace(' ', '').strip()
-    # 마이너스 처리
-    negative = '-' in s or '▼' in s
-    s = re.sub(r'[^0-9]', '', s)
-    try:
-        val = int(s)
-        return -val if negative else val
-    except ValueError:
-        return 0
-
-
 # ─── 분석 ──────────────────────────────────────────────────────────────────
 
 def analyze_flow(rows: list) -> dict:
@@ -214,7 +129,7 @@ def analyze_flow(rows: list) -> dict:
     외국인 수급 분석
     - 당일 순매수/순매도 판단
     - 매수 전환 여부 (전일 대비)
-    - 5일 연속 매수/매도 확인
+    - 연속 매수/매도일 계산
     """
     if not rows:
         return {
@@ -332,7 +247,6 @@ def send_telegram(analysis: dict, rows: list, detail: dict):
         return
 
     signal = analysis.get("signal", "")
-    # 시그널별 이모지
     emoji_map = {
         "BUY_TURN": "🔵🔄",
         "SELL_TURN": "🔴🔄",
@@ -402,20 +316,10 @@ def main():
     today_str = today.strftime("%Y-%m-%d")
     print(f"=== KOSPI 외국인 수급 모니터링 ({today_str} 17:00 KST) ===")
 
-    # 1) 데이터 수집 (다중 소스 fallback)
-    print("\n[1] 투자자별 매매동향 수집...")
-    trend = fetch_naver_investor_trend()
+    # 1) 데이터 수집 (Naver 모바일 API)
+    print("\n[1] 투자자별 매매동향 수집 (Naver Mobile API)...")
+    trend = fetch_naver_mobile_trend(today)
     rows = trend.get("rows", [])
-
-    if not rows:
-        print("  -> Naver 실패, pykrx fallback 시도...")
-        trend = fetch_pykrx_investor(today_str)
-        rows = trend.get("rows", [])
-
-    if not rows:
-        print("  -> pykrx 실패, KRX API fallback 시도...")
-        trend = fetch_krx_api_investor(today_str)
-        rows = trend.get("rows", [])
 
     print(f"  -> {len(rows)}일치 데이터 수집 (source: {trend.get('source', 'unknown')})")
     for r in rows[:5]:

@@ -1,0 +1,164 @@
+{
+  "date": "2026-03-07",
+  "collected_at": "2026-03-07T08:13:57.439963",
+  "source": "naver_mobile",
+  "analysis": {
+    "status": "OK",
+    "date": "2026.03.06",
+    "today_foreign": -19418,
+    "today_institution": -11142,
+    "today_individual": 29488,
+    "direction": "NET_SELL",
+    "direction_kr": "순매도",
+    "turned_to_buy": false,
+    "turned_to_sell": false,
+    "consecutive_buy_days": 0,
+    "consecutive_sell_days": 2,
+    "five_day_total": -140576,
+    "signal": "SELL",
+    "signal_kr": "순매도",
+    "message": "외국인 19,418억원 순매도"
+  },
+  "daily_trend": [
+    {
+      "date": "2026.03.06",
+      "foreign": -19418,
+      "institution": -11142,
+      "individual": 29488
+    },
+    {
+      "date": "2026.03.05",
+      "foreign": -1446,
+      "institution": -17186,
+      "individual": 18228
+    },
+    {
+      "date": "2026.03.04",
+      "foreign": 2303,
+      "institution": -5978,
+      "individual": 796
+    },
+    {
+      "date": "2026.03.03",
+      "foreign": -51487,
+      "institution": -8859,
+      "individual": 57974
+    },
+    {
+      "date": "2026.02.27",
+      "foreign": -70528,
+      "institution": 5666,
+      "individual": 62496
+    },
+    {
+      "date": "2026.02.26",
+      "foreign": -21135,
+      "institution": 12569,
+      "individual": 6498
+    },
+    {
+      "date": "2026.02.25",
+      "foreign": -13082,
+      "institution": 14701,
+      "individual": 2307
+    },
+    {
+      "date": "2026.02.24",
+      "foreign": -2013,
+      "institution": 23773,
+      "individual": -22861
+    },
+    {
+      "date": "2026.02.23",
+      "foreign": -11132,
+      "institution": -1271,
+      "individual": 10815
+    }
+  ],
+  "foreign_detail": {
+    "buy_top": [
+      {
+        "name": "한미반도체",
+        "amount": 333500
+      },
+      {
+        "name": "KODEX 코스닥150레버리지",
+        "amount": 18220
+      },
+      {
+        "name": "LIG넥스원",
+        "amount": 834000
+      },
+      {
+        "name": "한화에어로스페이스",
+        "amount": 1481000
+      },
+      {
+        "name": "포스코인터내셔널",
+        "amount": 73300
+      },
+      {
+        "name": "대주전자재료",
+        "amount": 118800
+      },
+      {
+        "name": "리노공업",
+        "amount": 127000
+      },
+      {
+        "name": "삼성전자",
+        "amount": 188200
+      },
+      {
+        "name": "두산에너빌리티",
+        "amount": 98000
+      },
+      {
+        "name": "SK하이닉스",
+        "amount": 924000
+      }
+    ],
+    "sell_top": [
+      {
+        "name": "한미반도체",
+        "amount": 333500
+      },
+      {
+        "name": "KODEX 코스닥150레버리지",
+        "amount": 18220
+      },
+      {
+        "name": "LIG넥스원",
+        "amount": 834000
+      },
+      {
+        "name": "한화에어로스페이스",
+        "amount": 1481000
+      },
+      {
+        "name": "포스코인터내셔널",
+        "amount": 73300
+      },
+      {
+        "name": "대주전자재료",
+        "amount": 118800
+      },
+      {
+        "name": "리노공업",
+        "amount": 127000
+      },
+      {
+        "name": "삼성전자",
+        "amount": 188200
+      },
+      {
+        "name": "두산에너빌리티",
+        "amount": 98000
+      },
+      {
+        "name": "SK하이닉스",
+        "amount": 924000
+      }
+    ]
+  }
+}
