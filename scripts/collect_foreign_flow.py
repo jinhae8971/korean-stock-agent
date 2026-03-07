@@ -89,35 +89,38 @@ def fetch_naver_mobile_trend(end_date: dt.date) -> dict:
 
 def fetch_naver_foreign_detail() -> dict:
     """
-    네이버 금융 외국인 순매수 상위/하위 종목
+    네이버 금융 외국인 순매수/순매도 상위 종목
+    한 페이지에 순매수(Table 0)·순매도(Table 1) 테이블이 모두 포함됨
     """
     result = {"buy_top": [], "sell_top": []}
-    for buy_sell in ["buy", "sell"]:
-        url = "https://finance.naver.com/sise/sise_deal_rank.naver"
-        params = {
-            "sosok": "01",  # 코스피
-            "investor_gubun": "9000",  # 외국인
-            "type": buy_sell,
-        }
-        try:
-            resp = requests.get(url, params=params, headers=HEADERS, timeout=15)
-            resp.encoding = "euc-kr"
-            html = resp.text
+    url = "https://finance.naver.com/sise/sise_deal_rank.naver"
+    params = {"sosok": "01", "investor_gubun": "9000"}
+    try:
+        resp = requests.get(url, params=params, headers=HEADERS, timeout=15)
+        resp.encoding = "euc-kr"
+        html = resp.text
 
+        # 테이블별로 분리하여 파싱
+        tables = re.findall(r'<table[^>]*>(.*?)</table>', html, re.DOTALL)
+        keys = ["buy_top", "sell_top"]
+
+        for idx, table in enumerate(tables):
+            if idx >= 2:
+                break
             stocks = []
             matches = re.findall(
                 r'<a\s+href="/item/main\.naver\?code=\d+"[^>]*>(.*?)</a>.*?'
-                r'<td[^>]*>([\d,]+)</td>', html, re.DOTALL,
+                r'<td[^>]*>([\d,]+)</td>', table, re.DOTALL,
             )
             for name, amount in matches[:10]:
                 name = re.sub(r'<[^>]+>', '', name).strip()
                 amount = int(amount.replace(',', ''))
                 if name:
                     stocks.append({"name": name, "amount": amount})
+            result[keys[idx]] = stocks
 
-            result[f"{buy_sell}_top"] = stocks[:10]
-        except Exception as e:
-            print(f"  [WARN] Foreign {buy_sell} detail failed: {e}")
+    except Exception as e:
+        print(f"  [WARN] Foreign detail failed: {e}")
 
     return result
 
