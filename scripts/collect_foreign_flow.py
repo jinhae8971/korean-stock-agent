@@ -309,6 +309,173 @@ def send_telegram(analysis: dict, rows: list, detail: dict):
         print(f"  [WARN] Telegram send failed: {e}")
 
 
+# ─── HTML 리포트 생성 ──────────────────────────────────────────────────────
+
+def generate_html_report(result: dict) -> str:
+    """실행 결과를 시각화한 HTML 리포트 생성"""
+    a = result.get("analysis", {})
+    rows = result.get("daily_trend", [])
+    detail = result.get("foreign_detail", {})
+    buy_top = detail.get("buy_top", [])[:5]
+    sell_top = detail.get("sell_top", [])[:5]
+
+    signal = a.get("signal", "NEUTRAL")
+    signal_config = {
+        "BUY_TURN":    {"color": "#1565C0", "bg": "#E3F2FD", "border": "#90CAF9", "icon": "🔵🔄", "label": "매수 전환"},
+        "SELL_TURN":   {"color": "#C62828", "bg": "#FFEBEE", "border": "#EF9A9A", "icon": "🔴🔄", "label": "매도 전환"},
+        "STRONG_BUY":  {"color": "#1565C0", "bg": "#E3F2FD", "border": "#90CAF9", "icon": "🔵🔥", "label": "강한 매수"},
+        "STRONG_SELL": {"color": "#C62828", "bg": "#FFEBEE", "border": "#EF9A9A", "icon": "🔴🔥", "label": "강한 매도"},
+        "BUY":         {"color": "#1565C0", "bg": "#E8F5E9", "border": "#A5D6A7", "icon": "🔵",   "label": "순매수"},
+        "SELL":        {"color": "#C62828", "bg": "#FFF3E0", "border": "#FFCC80", "icon": "🔴",   "label": "순매도"},
+        "NEUTRAL":     {"color": "#616161", "bg": "#F5F5F5", "border": "#E0E0E0", "icon": "⚪",   "label": "중립"},
+    }
+    sc = signal_config.get(signal, signal_config["NEUTRAL"])
+
+    # 바 차트 데이터
+    bar_rows_html = ""
+    if rows:
+        max_abs = max(abs(r.get("foreign", 0)) for r in rows[:7]) or 1
+        for r in rows[:7]:
+            f = r.get("foreign", 0)
+            pct = abs(f) / max_abs * 100
+            color = "#1565C0" if f >= 0 else "#C62828"
+            sign = "+" if f > 0 else ""
+            bar_rows_html += f"""
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+              <span style="width:80px;font-size:12px;color:#666;font-family:monospace">{r.get('date','')}</span>
+              <div style="flex:1;display:flex;align-items:center;height:28px">
+                {"<div style='flex:1'></div><div style='flex:1;display:flex;align-items:center'><div style=" + repr(f"background:{color};height:22px;border-radius:0 4px 4px 0;width:{pct/2}%;min-width:2px") + "></div><span style='font-size:12px;margin-left:6px;color:" + color + f";font-family:monospace;font-weight:600'>{sign}{f:,}</span></div>" if f >= 0 else "<div style='flex:1;display:flex;align-items:center;justify-content:flex-end'><span style='font-size:12px;margin-right:6px;color:" + color + f";font-family:monospace;font-weight:600'>{f:,}</span><div style=" + repr(f"background:{color};height:22px;border-radius:4px 0 0 4px;width:{pct/2}%;min-width:2px") + "></div></div><div style='flex:1'></div>"}
+              </div>
+            </div>"""
+
+    # 투자자별 카드
+    investors = [
+        ("🌐 외국인", a.get("today_foreign", 0), "#1565C0"),
+        ("🏦 기관",   a.get("today_institution", 0), "#7B1FA2"),
+        ("👤 개인",   a.get("today_individual", 0), "#E65100"),
+    ]
+    investor_cards = ""
+    for label, val, accent in investors:
+        val_color = "#2E7D32" if val > 0 else "#C62828" if val < 0 else "#666"
+        sign = "+" if val > 0 else ""
+        arrow = "▲ 순매수" if val > 0 else "▼ 순매도" if val < 0 else "— 보합"
+        investor_cards += f"""
+        <div style="background:#F5F7FA;border-radius:10px;padding:16px;text-align:center;border:1px solid #E0E0E0">
+          <div style="font-size:13px;color:#555;margin-bottom:6px">{label}</div>
+          <div style="font-size:22px;font-weight:700;color:{val_color};font-family:monospace">{sign}{val:,}억</div>
+          <div style="font-size:11px;color:{val_color};margin-top:4px">{arrow}</div>
+        </div>"""
+
+    # 순매수/매도 TOP 5 테이블
+    def _stock_table(stocks, title, color):
+        if not stocks:
+            return ""
+        rows_html = ""
+        for i, s in enumerate(stocks):
+            bg = "#F8F9FA" if i % 2 == 0 else "#FFF"
+            rows_html += f"""
+            <tr style="background:{bg}">
+              <td style="padding:6px 10px;font-size:13px;color:#333">{i+1}</td>
+              <td style="padding:6px 10px;font-size:13px;color:#333">{s.get('name','')}</td>
+              <td style="padding:6px 10px;font-size:13px;color:{color};font-family:monospace;text-align:right;font-weight:600">{s.get('amount',0):,}</td>
+            </tr>"""
+        return f"""
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700;color:{color};margin-bottom:8px">{title}</div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+            <thead><tr style="background:#F0F0F0">
+              <th style="padding:6px 10px;font-size:11px;color:#666;text-align:left;width:30px">#</th>
+              <th style="padding:6px 10px;font-size:11px;color:#666;text-align:left">종목</th>
+              <th style="padding:6px 10px;font-size:11px;color:#666;text-align:right">금액(백만원)</th>
+            </tr></thead>
+            <tbody>{rows_html}</tbody>
+          </table>
+        </div>"""
+
+    buy_table = _stock_table(buy_top, "🔵 외국인 순매수 TOP 5", "#1565C0")
+    sell_table = _stock_table(sell_top, "🔴 외국인 순매도 TOP 5", "#C62828")
+
+    five_day = a.get("five_day_total", 0)
+    five_color = "#2E7D32" if five_day > 0 else "#C62828"
+    five_sign = "+" if five_day > 0 else ""
+
+    html = f"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOSPI 외국인 수급 리포트 — {result.get('date','')}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+  * {{ margin:0; padding:0; box-sizing:border-box; font-family:'Noto Sans KR',sans-serif; }}
+  body {{ background:#FFFFFF; color:#212121; }}
+</style>
+</head>
+<body>
+<div style="max-width:720px;margin:0 auto;padding:24px 16px">
+
+  <!-- 헤더 -->
+  <div style="text-align:center;margin-bottom:28px">
+    <div style="font-size:14px;color:#999;letter-spacing:2px;margin-bottom:6px">KOSPI FOREIGN INVESTOR FLOW</div>
+    <h1 style="font-size:24px;font-weight:900;color:#1A1A2E;margin-bottom:4px">🌐 외국인 수급 리포트</h1>
+    <div style="font-size:13px;color:#888">📅 {a.get('date', result.get('date',''))} 기준 · {result.get('source','').replace('_',' ').upper()}</div>
+  </div>
+
+  <!-- 시그널 배너 -->
+  <div style="background:{sc['bg']};border:2px solid {sc['border']};border-radius:14px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:16px">
+    <span style="font-size:42px">{sc['icon']}</span>
+    <div>
+      <div style="font-size:20px;font-weight:800;color:{sc['color']}">{a.get('signal_kr', sc['label'])}</div>
+      <div style="font-size:14px;color:#555;margin-top:4px">{a.get('message','')}</div>
+    </div>
+  </div>
+
+  <!-- 투자자별 수급 -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px">
+    {investor_cards}
+  </div>
+
+  <!-- 지표 카드 -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
+    <div style="background:#F5F7FA;border-radius:10px;padding:12px;text-align:center;border:1px solid #E0E0E0">
+      <div style="font-size:11px;color:#888">연속 매수</div>
+      <div style="font-size:18px;font-weight:700;color:#1565C0;font-family:monospace">{a.get('consecutive_buy_days',0)}일</div>
+    </div>
+    <div style="background:#F5F7FA;border-radius:10px;padding:12px;text-align:center;border:1px solid #E0E0E0">
+      <div style="font-size:11px;color:#888">연속 매도</div>
+      <div style="font-size:18px;font-weight:700;color:#C62828;font-family:monospace">{a.get('consecutive_sell_days',0)}일</div>
+    </div>
+    <div style="background:#F5F7FA;border-radius:10px;padding:12px;text-align:center;border:1px solid #E0E0E0">
+      <div style="font-size:11px;color:#888">5일 누적</div>
+      <div style="font-size:18px;font-weight:700;color:{five_color};font-family:monospace">{five_sign}{five_day:,}억</div>
+    </div>
+  </div>
+
+  <!-- 수급 추이 바 차트 -->
+  <div style="background:#FFFFFF;border:1px solid #E0E0E0;border-radius:12px;padding:20px;margin-bottom:24px">
+    <div style="font-size:14px;font-weight:700;color:#333;margin-bottom:14px">📊 최근 외국인 수급 추이 <span style="font-size:11px;color:#999;font-weight:400">(단위: 억원)</span></div>
+    {bar_rows_html}
+  </div>
+
+  <!-- 순매수/매도 TOP 5 -->
+  <div style="display:flex;gap:16px;margin-bottom:24px">
+    {buy_table}
+    {sell_table}
+  </div>
+
+  <!-- 푸터 -->
+  <div style="text-align:center;padding:16px 0;border-top:1px solid #EEE;margin-top:12px">
+    <div style="font-size:11px;color:#AAA">Korean Stock Agent — KOSPI Foreign Flow Monitor</div>
+    <div style="font-size:10px;color:#CCC;margin-top:4px">수집: {result.get('collected_at','')[:19]} · ⚠️ 본 데이터는 참고용이며 투자 결정의 책임은 투자자 본인에게 있습니다.</div>
+  </div>
+
+</div>
+</body>
+</html>"""
+
+    return html
+
+
 # ─── 메인 ──────────────────────────────────────────────────────────────────
 
 def main():
@@ -358,8 +525,16 @@ def main():
         json.dump(result, f, ensure_ascii=False, indent=2)
     print(f"    Saved: {hist_path}")
 
-    # 5) 텔레그램 알림
-    print("\n[5] Telegram 알림 전송...")
+    # 5) HTML 리포트 생성
+    print("\n[5] HTML 리포트 생성...")
+    html = generate_html_report(result)
+    html_path = DOCS_DATA / "foreign_flow_report.html"
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"    Saved: {html_path}")
+
+    # 6) 텔레그램 알림
+    print("\n[6] Telegram 알림 전송...")
     send_telegram(analysis, rows, detail)
 
     print(f"\n=== 완료 ===")
