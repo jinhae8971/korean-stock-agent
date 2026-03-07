@@ -1,0 +1,79 @@
+name: KOSPI Foreign Flow Monitor
+
+on:
+  schedule:
+    # 평일 KST 17:00 = UTC 08:00 (월~금)
+    - cron: "0 8 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect-foreign-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # ─── 1. 코드 체크아웃 ───────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      # ─── 2. Python 환경 설정 ────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # ─── 3. 의존성 설치 ─────────────────────────────────────────────────
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pykrx
+
+      # ─── 4. 외국인 수급 수집 실행 ──────────────────────────────────────
+      - name: Collect KOSPI foreign investor flow
+        env:
+          TELEGRAM_TOKEN:   ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TZ: "Asia/Seoul"
+        run: |
+          python scripts/collect_foreign_flow.py
+
+      # ─── 5. 결과 커밋 & 푸시 ────────────────────────────────────────────
+      - name: Commit and push data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/foreign_flow.json || true
+          git add data/history_flow/ || true
+          git status --short
+          git diff --staged --quiet || \
+            git commit -m "chore: foreign flow $(date +'%Y-%m-%d' --date='TZ=\"Asia/Seoul\" now')"
+          git push
+
+      # ─── 6. 실패 시 Telegram 알림 ───────────────────────────────────────
+      - name: Notify failure via Telegram
+        if: failure()
+        env:
+          TELEGRAM_TOKEN:   ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python - <<'PYEOF'
+          import os, requests, sys
+          token    = os.environ.get("TELEGRAM_TOKEN", "")
+          chat_id  = os.environ.get("TELEGRAM_CHAT_ID", "")
+          if not token or not chat_id:
+              print("Telegram 설정 없음 — 알림 건너뜀")
+              sys.exit(0)
+          msg = "❌ 외국인 수급 모니터링 실패!\nGitHub Actions 로그를 확인해 주세요.\nhttps://github.com/${{ github.repository }}/actions"
+          requests.post(
+              f"https://api.telegram.org/bot{token}/sendMessage",
+              json={"chat_id": chat_id, "text": msg},
+              timeout=10,
+          )
+          PYEOF

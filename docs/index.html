@@ -540,17 +540,172 @@
       );
     }
 
+    function ForeignFlowCard({ flow }) {
+      if (!flow || !flow.analysis) return null;
+      const a = flow.analysis;
+      const rows = flow.daily_trend || [];
+      const buyTop = (flow.foreign_detail || {}).buy_top || [];
+      const sellTop = (flow.foreign_detail || {}).sell_top || [];
+
+      const signalColors = {
+        BUY_TURN:    { bg:"bg-blue-100", border:"border-blue-300", text:"text-blue-700", icon:"🔵🔄" },
+        SELL_TURN:   { bg:"bg-red-100",  border:"border-red-300",  text:"text-red-700",  icon:"🔴🔄" },
+        STRONG_BUY:  { bg:"bg-blue-100", border:"border-blue-300", text:"text-blue-700", icon:"🔵🔥" },
+        STRONG_SELL: { bg:"bg-red-100",  border:"border-red-300",  text:"text-red-700",  icon:"🔴🔥" },
+        BUY:         { bg:"bg-blue-50",  border:"border-blue-200", text:"text-blue-600", icon:"🔵" },
+        SELL:        { bg:"bg-red-50",   border:"border-red-200",  text:"text-red-600",  icon:"🔴" },
+        NEUTRAL:     { bg:"bg-gray-50",  border:"border-gray-200", text:"text-gray-600", icon:"⚪" },
+      };
+      const sc = signalColors[a.signal] || signalColors.NEUTRAL;
+
+      return (
+        <div className="card-gradient rounded-lg mb-6">
+          <div className="p-4 border-b border-gray-200 flex items-center gap-2">
+            <span className="text-lg">🌐</span>
+            <h3 className="font-bold text-gray-900">KOSPI 외국인 수급 모니터</h3>
+            <span className="text-xs text-gray-500 ml-2">{flow.date} 17:00 기준</span>
+          </div>
+          <div className="p-4">
+            {/* 시그널 배너 */}
+            <div className={`rounded-lg p-4 mb-4 border ${sc.bg} ${sc.border}`}>
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">{sc.icon}</span>
+                <div>
+                  <div className={`text-lg font-bold ${sc.text}`}>{a.signal_kr}</div>
+                  <div className="text-sm text-gray-700">{a.message}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 투자자별 수급 */}
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {[
+                { label:"외국인", val:a.today_foreign, color:"blue" },
+                { label:"기관",   val:a.today_institution, color:"purple" },
+                { label:"개인",   val:a.today_individual, color:"amber" },
+              ].map(({label, val, color}) => (
+                <div key={label} className="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+                  <div className="text-xs text-gray-600 mb-1">{label}</div>
+                  <div className={`text-lg font-bold mono ${val > 0 ? "text-green-600" : val < 0 ? "text-red-600" : "text-gray-500"}`}>
+                    {val > 0 ? "+" : ""}{(val || 0).toLocaleString()}억
+                  </div>
+                  <div className={`text-xs ${val > 0 ? "text-green-600" : val < 0 ? "text-red-600" : "text-gray-500"}`}>
+                    {val > 0 ? "▲ 순매수" : val < 0 ? "▼ 순매도" : "보합"}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 연속일 & 5일 누적 */}
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="bg-gray-50 rounded-lg p-2 text-center border border-gray-200">
+                <div className="text-xs text-gray-600">연속 매수</div>
+                <div className="text-sm font-bold mono text-blue-600">{a.consecutive_buy_days || 0}일</div>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-2 text-center border border-gray-200">
+                <div className="text-xs text-gray-600">연속 매도</div>
+                <div className="text-sm font-bold mono text-red-600">{a.consecutive_sell_days || 0}일</div>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-2 text-center border border-gray-200">
+                <div className="text-xs text-gray-600">5일 누적</div>
+                <div className={`text-sm font-bold mono ${(a.five_day_total||0) > 0 ? "text-green-600" : "text-red-600"}`}>
+                  {(a.five_day_total||0) > 0 ? "+" : ""}{(a.five_day_total||0).toLocaleString()}억
+                </div>
+              </div>
+            </div>
+
+            {/* 최근 5일 추이 바 차트 */}
+            {rows.length > 0 && (
+              <div className="mb-4">
+                <div className="text-xs text-gray-600 mb-2 font-semibold">📊 최근 외국인 수급 추이</div>
+                <div className="space-y-1.5">
+                  {rows.slice(0, 5).map((r, i) => {
+                    const f = r.foreign || 0;
+                    const maxAbs = Math.max(...rows.slice(0,5).map(x => Math.abs(x.foreign || 0)), 1);
+                    const width = Math.max(Math.abs(f) / maxAbs * 100, 2);
+                    return (
+                      <div key={i} className="flex items-center gap-2">
+                        <span className="text-xs text-gray-500 mono w-20 flex-shrink-0">{r.date}</span>
+                        <div className="flex-1 flex items-center">
+                          {f >= 0 ? (
+                            <div className="flex items-center w-full">
+                              <div className="w-1/2"></div>
+                              <div className="w-1/2 flex items-center">
+                                <div className="bg-blue-500 h-4 rounded-r" style={{width:`${width/2}%`, minWidth:"2px"}}></div>
+                                <span className="text-xs mono ml-1 text-blue-600">{f > 0 ? "+" : ""}{f.toLocaleString()}</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex items-center w-full">
+                              <div className="w-1/2 flex items-center justify-end">
+                                <span className="text-xs mono mr-1 text-red-600">{f.toLocaleString()}</span>
+                                <div className="bg-red-500 h-4 rounded-l" style={{width:`${width/2}%`, minWidth:"2px"}}></div>
+                              </div>
+                              <div className="w-1/2"></div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* 외국인 순매수/매도 TOP 5 */}
+            {(buyTop.length > 0 || sellTop.length > 0) && (
+              <div className="grid grid-cols-2 gap-3">
+                {buyTop.length > 0 && (
+                  <div>
+                    <div className="text-xs text-blue-600 font-semibold mb-1">🔵 순매수 TOP 5</div>
+                    {buyTop.slice(0,5).map((s, i) => (
+                      <div key={i} className="flex justify-between text-xs py-0.5">
+                        <span className="text-gray-700 truncate">{s.name}</span>
+                        <span className="mono text-blue-600 ml-2">{(s.amount||0).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {sellTop.length > 0 && (
+                  <div>
+                    <div className="text-xs text-red-600 font-semibold mb-1">🔴 순매도 TOP 5</div>
+                    {sellTop.slice(0,5).map((s, i) => (
+                      <div key={i} className="flex justify-between text-xs py-0.5">
+                        <span className="text-gray-700 truncate">{s.name}</span>
+                        <span className="mono text-red-600 ml-2">{(s.amount||0).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     // ─── 메인 앱 ─────────────────────────────────────────────────────────────
     function App() {
       const [report, setReport] = useState(null);
+      const [foreignFlow, setForeignFlow] = useState(null);
       const [loading, setLoading] = useState(true);
       const [usingSample, setUsingSample] = useState(false);
 
       useEffect(() => {
-        fetch(`./data/daily_report.json?t=${Date.now()}`)
+        const loadReport = fetch(`./data/daily_report.json?t=${Date.now()}`)
           .then(r => r.json())
-          .then(data => { setReport(data); setLoading(false); })
-          .catch(() => { setReport(SAMPLE); setUsingSample(true); setLoading(false); });
+          .catch(() => SAMPLE);
+
+        const loadFlow = fetch(`./data/foreign_flow.json?t=${Date.now()}`)
+          .then(r => r.json())
+          .catch(() => null);
+
+        Promise.all([loadReport, loadFlow]).then(([reportData, flowData]) => {
+          if (reportData === SAMPLE) setUsingSample(true);
+          setReport(reportData);
+          setForeignFlow(flowData);
+          setLoading(false);
+        });
       }, []);
 
       if (loading) return (
@@ -593,6 +748,7 @@
               {/* 오른쪽 */}
               <div>
                 <SectorHeatmap topSectors={verdict.top_sectors} topStocks={md.top_stocks} />
+                {foreignFlow && <ForeignFlowCard flow={foreignFlow} />}
                 <BacktestLeaderboard backtest={backtest} />
               </div>
             </div>
