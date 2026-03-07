@@ -1,6 +1,6 @@
 {
   "date": "2026-03-07",
-  "collected_at": "2026-03-07T08:20:49.715161",
+  "collected_at": "2026-03-07T08:25:20.429200",
   "source": "naver_mobile",
   "analysis": {
     "status": "OK",
@@ -80,10 +80,6 @@
       {
         "name": "한미반도체",
         "amount": 333500
-      },
-      {
-        "name": "KODEX 코스닥150레버리지",
-        "amount": 18220
       },
       {
         "name": "LIG넥스원",

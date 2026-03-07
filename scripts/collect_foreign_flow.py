@@ -87,10 +87,23 @@ def fetch_naver_mobile_trend(end_date: dt.date) -> dict:
     return {"source": "naver_mobile", "rows": rows}
 
 
+_ETF_PREFIXES = (
+    "KODEX", "TIGER", "KBSTAR", "ARIRANG", "HANARO", "SOL", "ACE",
+    "KOSEF", "KINDEX", "TIMEFOLIO", "PLUS", "BNK", "WOORI", "RISE",
+    "FOCUS", "MASTERL", "파워", "마이티", "히어로",
+)
+
+
+def _is_etf(name: str) -> bool:
+    upper = name.upper()
+    return any(upper.startswith(p.upper()) for p in _ETF_PREFIXES)
+
+
 def fetch_naver_foreign_detail() -> dict:
     """
     네이버 금융 외국인 순매수/순매도 상위 종목
     한 페이지에 순매수(Table 0)·순매도(Table 1) 테이블이 모두 포함됨
+    ETF는 제외
     """
     result = {"buy_top": [], "sell_top": []}
     url = "https://finance.naver.com/sise/sise_deal_rank.naver"
@@ -112,12 +125,12 @@ def fetch_naver_foreign_detail() -> dict:
                 r'<a\s+href="/item/main\.naver\?code=\d+"[^>]*>(.*?)</a>.*?'
                 r'<td[^>]*>([\d,]+)</td>', table, re.DOTALL,
             )
-            for name, amount in matches[:10]:
+            for name, amount in matches:
                 name = re.sub(r'<[^>]+>', '', name).strip()
                 amount = int(amount.replace(',', ''))
-                if name:
+                if name and not _is_etf(name):
                     stocks.append({"name": name, "amount": amount})
-            result[keys[idx]] = stocks
+            result[keys[idx]] = stocks[:10]
 
     except Exception as e:
         print(f"  [WARN] Foreign detail failed: {e}")
