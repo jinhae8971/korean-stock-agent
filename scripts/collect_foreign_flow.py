@@ -102,38 +102,51 @@ def _is_etf(name: str) -> bool:
 def fetch_naver_foreign_detail() -> dict:
     """
     네이버 금융 외국인 순매수/순매도 상위 종목
-    한 페이지에 순매수(Table 0)·순매도(Table 1) 테이블이 모두 포함됨
+    메인 페이지의 iframe을 직접 호출하여 실제 순매수/매도 금액을 파싱
+    iframe 컬럼: 종목명 | 수량(주) | 금액(천원) | 당일거래량
+    amount 저장 단위: 백만원 (천원 ÷ 1,000)
     ETF는 제외
     """
     result = {"buy_top": [], "sell_top": []}
-    url = "https://finance.naver.com/sise/sise_deal_rank.naver"
-    params = {"sosok": "01", "investor_gubun": "9000"}
-    try:
-        resp = requests.get(url, params=params, headers=HEADERS, timeout=15)
-        resp.encoding = "euc-kr"
-        html = resp.text
+    base_url = "https://finance.naver.com/sise/sise_deal_rank_iframe.naver"
+    types = [("buy", "buy_top"), ("sell", "sell_top")]
 
-        # 테이블별로 분리하여 파싱
-        tables = re.findall(r'<table[^>]*>(.*?)</table>', html, re.DOTALL)
-        keys = ["buy_top", "sell_top"]
+    for deal_type, key in types:
+        try:
+            params = {"sosok": "01", "investor_gubun": "9000", "type": deal_type}
+            resp = requests.get(base_url, params=params, headers=HEADERS, timeout=15)
+            resp.encoding = "euc-kr"
+            html = resp.text
 
-        for idx, table in enumerate(tables):
-            if idx >= 2:
-                break
             stocks = []
-            matches = re.findall(
-                r'<a\s+href="/item/main\.naver\?code=\d+"[^>]*>(.*?)</a>.*?'
-                r'<td[^>]*>([\d,]+)</td>', table, re.DOTALL,
-            )
-            for name, amount in matches:
-                name = re.sub(r'<[^>]+>', '', name).strip()
-                amount = int(amount.replace(',', ''))
-                if name and not _is_etf(name):
-                    stocks.append({"name": name, "amount": amount})
-            result[keys[idx]] = stocks[:10]
+            for m in re.finditer(
+                r'<a\s+href="/item/main\.naver\?code=\d+"[^>]*>(.*?)</a>',
+                html, re.DOTALL,
+            ):
+                name = re.sub(r'<[^>]+>', '', m.group(1)).strip()
+                if not name or _is_etf(name):
+                    continue
 
-    except Exception as e:
-        print(f"  [WARN] Foreign detail failed: {e}")
+                # 종목명 <a> 태그 이후의 <td> 들을 순서대로 파싱
+                # 컬럼 순서: [수량(주)] [금액(천원)] [당일거래량]
+                after = html[m.end():]
+                tds = re.findall(r'<td[^>]*>(.*?)</td>', after[:500], re.DOTALL)
+                if len(tds) >= 2:
+                    amount_str = re.sub(r'<[^>]+>', '', tds[1]).strip()
+                    amount_str = amount_str.replace(',', '').replace('+', '')
+                    try:
+                        amount_1000won = int(amount_str)  # 천원 단위
+                    except ValueError:
+                        continue
+                    # 천원 → 백만원 변환 (반올림)
+                    amount_mw = round(abs(amount_1000won) / 1000)
+                    if amount_mw > 0:
+                        stocks.append({"name": name, "amount": amount_mw})
+
+            result[key] = stocks[:10]
+
+        except Exception as e:
+            print(f"  [WARN] Foreign detail ({deal_type}) failed: {e}")
 
     return result
 
@@ -252,6 +265,19 @@ def analyze_flow(rows: list) -> dict:
     }
 
 
+def _fmt_amount(amount_mw: int) -> str:
+    """백만원 단위 금액을 읽기 쉬운 형태로 변환"""
+    if amount_mw >= 100000:  # 1,000억 이상 → 조원
+        return f"{amount_mw / 1000000:.2f}조원"
+    elif amount_mw >= 100:   # 1억 이상 → 억원
+        eok = amount_mw / 100
+        if eok >= 100:
+            return f"{eok:,.0f}억원"
+        return f"{eok:,.1f}억원"
+    else:                    # 1억 미만 → 백만원
+        return f"{amount_mw:,}백만원"
+
+
 # ─── 텔레그램 알림 ─────────────────────────────────────────────────────────
 
 def send_telegram(analysis: dict, rows: list, detail: dict):
@@ -304,13 +330,21 @@ def send_telegram(analysis: dict, rows: list, detail: dict):
             icon = "🔵" if f > 0 else "🔴" if f < 0 else "⚪"
             lines.append(f"  {r.get('date', '')} {icon} {f:+,}억원")
 
-    # 외국인 순매수 상위
+    # 외국인 순매수 상위 (amount 단위: 백만원)
     buy_top = detail.get("buy_top", [])
     if buy_top:
         lines.append("")
         lines.append("🔵 <b>외국인 순매수 TOP 5</b>")
         for s in buy_top[:5]:
-            lines.append(f"  · {s['name']} ({s['amount']:,}백만원)")
+            lines.append(f"  · {s['name']} ({_fmt_amount(s['amount'])})")
+
+    # 외국인 순매도 상위
+    sell_top = detail.get("sell_top", [])
+    if sell_top:
+        lines.append("")
+        lines.append("🔴 <b>외국인 순매도 TOP 5</b>")
+        for s in sell_top[:5]:
+            lines.append(f"  · {s['name']} ({_fmt_amount(s['amount'])})")
 
     msg = "\n".join(lines)
 
@@ -393,7 +427,7 @@ def generate_html_report(result: dict) -> str:
             <tr style="background:{bg}">
               <td style="padding:6px 10px;font-size:13px;color:#333">{i+1}</td>
               <td style="padding:6px 10px;font-size:13px;color:#333">{s.get('name','')}</td>
-              <td style="padding:6px 10px;font-size:13px;color:{color};font-family:monospace;text-align:right;font-weight:600">{s.get('amount',0):,}</td>
+              <td style="padding:6px 10px;font-size:13px;color:{color};font-family:monospace;text-align:right;font-weight:600">{_fmt_amount(s.get('amount',0))}</td>
             </tr>"""
         return f"""
         <div style="flex:1">
@@ -402,7 +436,7 @@ def generate_html_report(result: dict) -> str:
             <thead><tr style="background:#F0F0F0">
               <th style="padding:6px 10px;font-size:11px;color:#666;text-align:left;width:30px">#</th>
               <th style="padding:6px 10px;font-size:11px;color:#666;text-align:left">종목</th>
-              <th style="padding:6px 10px;font-size:11px;color:#666;text-align:right">금액(백만원)</th>
+              <th style="padding:6px 10px;font-size:11px;color:#666;text-align:right">금액</th>
             </tr></thead>
             <tbody>{rows_html}</tbody>
           </table>
