@@ -412,8 +412,8 @@ def send_telegram(analysis: dict, rows: list, detail: dict, ownership: list = No
     # ── 출처 ─────────────────────────────────────────────────────────────
     lines.append("<i>Source: 네이버 금융 | Korean Stock Agent</i>")
 
-    msg = "
-".join(lines)
+    newline = "\n"
+    msg = newline.join(lines)
 
     try:
         requests.post(
