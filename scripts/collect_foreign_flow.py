@@ -153,6 +153,49 @@ def fetch_naver_foreign_detail() -> dict:
 
 # ─── 분석 ──────────────────────────────────────────────────────────────────
 
+
+
+def fetch_samsung_foreign_ownership(n: int = 5) -> list:
+    """
+    네이버 금융 frgn 페이지에서 삼성전자(005930) 외국인 지분율 추이 수집
+    반환: [{"date": "2026.04.10", "rate": 48.64, "change": +0.00}, ...]  최신순
+    """
+    import re
+    url = "https://finance.naver.com/item/frgn.naver?code=005930"
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=15)
+        resp.encoding = "euc-kr"
+        html = resp.text
+
+        rows = re.findall(r'<tr[^>]*>(.*?)</tr>', html, re.DOTALL)
+        records = []
+        for row in rows:
+            cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.DOTALL)
+            cells = [re.sub(r'<[^>]+>', '', c).strip() for c in cells]
+            cells = [c for c in cells if c]
+            # 날짜 형식 & 마지막 컬럼이 지분율(XX.XX%)인 행만
+            if len(cells) >= 9 and re.match(r'\d{4}\.\d{2}\.\d{2}', cells[0]):
+                try:
+                    rate = float(cells[8].replace('%', '').replace(',', '').strip())
+                    records.append({"date": cells[0], "rate": rate})
+                except ValueError:
+                    continue
+
+        # 변화량 계산 (전일 대비)
+        result = []
+        for i, rec in enumerate(records[:n]):
+            if i + 1 < len(records):
+                change = round(rec["rate"] - records[i + 1]["rate"], 2)
+            else:
+                change = 0.0
+            result.append({"date": rec["date"], "rate": rec["rate"], "change": change})
+
+        return result
+
+    except Exception as e:
+        print(f"  [WARN] Samsung ownership fetch failed: {e}")
+        return []
+
 def analyze_flow(rows: list) -> dict:
     """
     외국인 수급 분석
@@ -280,7 +323,7 @@ def _fmt_amount(amount_mw: int) -> str:
 
 # ─── 텔레그램 알림 ─────────────────────────────────────────────────────────
 
-def send_telegram(analysis: dict, rows: list, detail: dict):
+def send_telegram(analysis: dict, rows: list, detail: dict, ownership: list = None):
     """텔레그램으로 외국인 수급 알림 전송"""
     token = os.environ.get("TELEGRAM_TOKEN", "")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
@@ -331,6 +374,22 @@ def send_telegram(analysis: dict, rows: list, detail: dict):
             lines.append(f"  {r.get('date', '')} {icon} {f:+,}억원")
 
 
+
+
+    # 삼성전자 외국인 지분율 추이
+    if ownership:
+        lines.append("")
+        lines.append("📌 <b>삼성전자 외국인 지분율 추이</b>")
+        for o in ownership[:5]:
+            rate = o.get("rate", 0)
+            change = o.get("change", 0.0)
+            if change > 0:
+                arrow = f"▲ +{change:.2f}%p"
+            elif change < 0:
+                arrow = f"▼ {change:.2f}%p"
+            else:
+                arrow = "─ 변동없음"
+            lines.append(f"  {o.get('date','')} <b>{rate:.2f}%</b>  {arrow}")
 
     msg = "\n".join(lines)
 
@@ -571,7 +630,15 @@ def main():
 
     # 6) 텔레그램 알림
     print("\n[6] Telegram 알림 전송...")
-    send_telegram(analysis, rows, detail)
+    # 삼성전자 외국인 지분율 수집
+    print("\n[7] 삼성전자 외국인 지분율 수집...")
+    ownership = fetch_samsung_foreign_ownership(5)
+    if ownership:
+        print(f"  -> {len(ownership)}일치 지분율 수집: 최근 {ownership[0].get('rate')}% ({ownership[0].get('date')})")
+    else:
+        print("  -> 지분율 수집 실패")
+
+    send_telegram(analysis, rows, detail, ownership)
 
     print(f"\n=== 완료 ===")
     return result
