@@ -324,74 +324,96 @@ def _fmt_amount(amount_mw: int) -> str:
 # ─── 텔레그램 알림 ─────────────────────────────────────────────────────────
 
 def send_telegram(analysis: dict, rows: list, detail: dict, ownership: list = None):
-    """텔레그램으로 외국인 수급 알림 전송"""
+    """텔레그램으로 외국인 수급 알림 전송 (전문 리서치 리포트 스타일)"""
     token = os.environ.get("TELEGRAM_TOKEN", "")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "")
     if not token or not chat_id:
         print("  [SKIP] Telegram credentials not set")
         return
 
-    signal = analysis.get("signal", "")
-    emoji_map = {
-        "BUY_TURN": "🔵🔄",
-        "SELL_TURN": "🔴🔄",
-        "STRONG_BUY": "🔵🔥",
-        "STRONG_SELL": "🔴🔥",
-        "BUY": "🔵",
-        "SELL": "🔴",
-        "NEUTRAL": "⚪",
+    signal    = analysis.get("signal", "NEUTRAL")
+    direction = analysis.get("direction", "FLAT")
+    date_str  = analysis.get("date", "N/A")
+    foreign   = analysis.get("today_foreign", 0)
+    inst      = analysis.get("today_institution", 0)
+    indiv     = analysis.get("today_individual", 0)
+    five_day  = analysis.get("five_day_total", 0)
+    signal_kr = analysis.get("signal_kr", "")
+    cons_buy  = analysis.get("consecutive_buy_days", 0)
+    cons_sell = analysis.get("consecutive_sell_days", 0)
+
+    # 수급 방향 텍스트
+    net_str = f"+{foreign:,}억원 순매수" if foreign > 0 else f"{foreign:,}억원 순매도" if foreign < 0 else "보합"
+    five_str = f"+{five_day:,}" if five_day > 0 else f"{five_day:,}"
+
+    # 시그널 레이블
+    signal_label_map = {
+        "BUY_TURN":    "[매수 전환]",
+        "SELL_TURN":   "[매도 전환]",
+        "STRONG_BUY":  "[강한 매수]",
+        "STRONG_SELL": "[강한 매도]",
+        "BUY":         "[순매수]",
+        "SELL":        "[순매도]",
+        "NEUTRAL":     "[중립]",
     }
-    emoji = emoji_map.get(signal, "⚪")
+    signal_label = signal_label_map.get(signal, "[중립]")
 
-    lines = [
-        f"{emoji} <b>KOSPI 외국인 수급 리포트</b>",
-        f"",
-        f"📅 {analysis.get('date', 'N/A')}",
-        f"",
-        f"<b>{analysis.get('message', '')}</b>",
-        f"",
-        f"👤 개인: {analysis.get('today_individual', 0):+,}억원",
-        f"🏦 기관: {analysis.get('today_institution', 0):+,}억원",
-        f"🌐 외국인: {analysis.get('today_foreign', 0):+,}억원",
-        f"",
-        f"📊 시그널: <b>{analysis.get('signal_kr', '')}</b>",
-    ]
+    lines = []
 
-    if analysis.get("consecutive_buy_days", 0) > 1:
-        lines.append(f"🔥 {analysis['consecutive_buy_days']}일 연속 순매수")
-    if analysis.get("consecutive_sell_days", 0) > 1:
-        lines.append(f"🔥 {analysis['consecutive_sell_days']}일 연속 순매도")
+    # ── 헤더 ──────────────────────────────────────────────────────────────
+    lines.append(f"<b>KOSPI 외국인 수급 동향</b>  |  {date_str}")
+    lines.append("─" * 30)
 
-    lines.append(f"📈 5일 누적: {analysis.get('five_day_total', 0):+,}억원")
+    # ── 당일 수급 요약 ────────────────────────────────────────────────────
+    lines.append(f"<b>[당일 수급]</b>")
+    lines.append(f"  외국인   {foreign:>+10,}억원")
+    lines.append(f"  기   관   {inst:>+10,}억원")
+    lines.append(f"  개   인   {indiv:>+10,}억원")
+    lines.append("")
 
-    # 최근 5일 추이
+    # ── 시그널 & 연속성 ───────────────────────────────────────────────────
+    lines.append(f"<b>[시그널]</b>  {signal_label}  {signal_kr}")
+    if cons_buy > 1:
+        lines.append(f"  외국인 {cons_buy}거래일 연속 순매수 지속")
+    if cons_sell > 1:
+        lines.append(f"  외국인 {cons_sell}거래일 연속 순매도 지속")
+    lines.append(f"  최근 5일 누적: {five_str}억원")
+    lines.append("")
+
+    # ── 최근 5일 수급 추이 ────────────────────────────────────────────────
     if rows:
+        lines.append(f"<b>[최근 5일 수급 추이]</b>")
+        lines.append(f"  {'날짜':<12} {'외국인':>10}")
+        lines.append(f"  {'─'*12} {'─'*10}")
+        for row in rows[:5]:
+            f_val = row.get("foreign", 0)
+            sign  = "+" if f_val > 0 else ""
+            mark  = "▲" if f_val > 0 else "▼" if f_val < 0 else "─"
+            lines.append(f"  {row.get('date',''):<12} {mark} {sign}{f_val:,}억")
         lines.append("")
-        lines.append("📋 <b>최근 5일 추이</b>")
-        for r in rows[:5]:
-            f = r.get("foreign", 0)
-            icon = "🔵" if f > 0 else "🔴" if f < 0 else "⚪"
-            lines.append(f"  {r.get('date', '')} {icon} {f:+,}억원")
 
-
-
-
-    # 삼성전자 외국인 지분율 추이
+    # ── 삼성전자 외국인 지분율 ────────────────────────────────────────────
     if ownership:
-        lines.append("")
-        lines.append("📌 <b>삼성전자 외국인 지분율 추이</b>")
+        lines.append(f"<b>[삼성전자 외국인 지분율]</b>")
+        lines.append(f"  {'날짜':<12} {'지분율':>8}  {'전일비':>8}")
+        lines.append(f"  {'─'*12} {'─'*8}  {'─'*8}")
         for o in ownership[:5]:
-            rate = o.get("rate", 0)
+            rate   = o.get("rate", 0)
             change = o.get("change", 0.0)
             if change > 0:
-                arrow = f"▲ +{change:.2f}%p"
+                chg_str = f"+{change:.2f}%p"
             elif change < 0:
-                arrow = f"▼ {change:.2f}%p"
+                chg_str = f"{change:.2f}%p"
             else:
-                arrow = "─ 변동없음"
-            lines.append(f"  {o.get('date','')} <b>{rate:.2f}%</b>  {arrow}")
+                chg_str = "   0.00%p"
+            lines.append(f"  {o.get('date',''):<12} {rate:>7.2f}%  {chg_str:>9}")
+        lines.append("")
 
-    msg = "\n".join(lines)
+    # ── 출처 ─────────────────────────────────────────────────────────────
+    lines.append("<i>Source: 네이버 금융 | Korean Stock Agent</i>")
+
+    msg = "
+".join(lines)
 
     try:
         requests.post(
@@ -402,9 +424,6 @@ def send_telegram(analysis: dict, rows: list, detail: dict, ownership: list = No
         print("  [OK] Telegram notification sent")
     except Exception as e:
         print(f"  [WARN] Telegram send failed: {e}")
-
-
-# ─── HTML 리포트 생성 ──────────────────────────────────────────────────────
 
 def generate_html_report(result: dict) -> str:
     """실행 결과를 시각화한 HTML 리포트 생성"""
