@@ -330,21 +330,7 @@ def send_telegram(analysis: dict, rows: list, detail: dict):
             icon = "🔵" if f > 0 else "🔴" if f < 0 else "⚪"
             lines.append(f"  {r.get('date', '')} {icon} {f:+,}억원")
 
-    # 외국인 순매수 상위 (amount 단위: 백만원)
-    buy_top = detail.get("buy_top", [])
-    if buy_top:
-        lines.append("")
-        lines.append("🔵 <b>외국인 순매수 TOP 5</b>")
-        for s in buy_top[:5]:
-            lines.append(f"  · {s['name']} ({_fmt_amount(s['amount'])})")
 
-    # 외국인 순매도 상위
-    sell_top = detail.get("sell_top", [])
-    if sell_top:
-        lines.append("")
-        lines.append("🔴 <b>외국인 순매도 TOP 5</b>")
-        for s in sell_top[:5]:
-            lines.append(f"  · {s['name']} ({_fmt_amount(s['amount'])})")
 
     msg = "\n".join(lines)
 
