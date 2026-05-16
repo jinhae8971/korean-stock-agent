@@ -11,6 +11,14 @@ run_pipeline.py — 전체 파이프라인 진입점
   6. 결과 저장 (docs/data/daily_report.json, data/history/)
   7. Telegram 알림 발송 (선택)
 """
+# === anthropic_usage_reporter (auto-injected) ===
+try:
+    from anthropic_usage_reporter import patch_anthropic_client
+    patch_anthropic_client(workflow="korean-stock-daily")
+except Exception:
+    pass
+# === end auto-injection ===
+
 import json
 import logging
 import os
